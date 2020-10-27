@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2020 | 021w</title>
+  <title>HEVD内核漏洞学习(7)任意内存覆盖 | 021w</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="021w">
-<meta property="og:url" content="http://yoursite.com/archives/2020/index.html">
+  <meta name="description" content="0x00前言第七篇了 讲任意内存覆盖 对于本节还是容易理解的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HEVD内核漏洞学习(7)任意内存覆盖">
+<meta property="og:url" content="http://yoursite.com/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/index.html">
 <meta property="og:site_name" content="021w">
+<meta property="og:description" content="0x00前言第七篇了 讲任意内存覆盖 对于本节还是容易理解的">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-10-26T14:43:32.000Z">
+<meta property="article:modified_time" content="2020-10-27T02:21:50.323Z">
 <meta property="article:author" content="021w">
+<meta property="article:tag" content="HEVD内核">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="021w" type="application/atom+xml">
@@ -124,36 +129,42 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-HEVD内核漏洞学习-7-任意内存覆盖" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      HEVD内核漏洞学习(7)任意内存覆盖
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/" class="archive-article-date">
+
+        
+        <a href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/" class="archive-article-date">
   	<time datetime="2020-10-26T14:43:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">HEVD内核漏洞学习(7)任意内存覆盖</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第七篇了 讲任意内存覆盖 对于本节还是容易理解的</p>
+<a id="more"></a>
+<h1 id="0x01漏洞原理"><a href="#0x01漏洞原理" class="headerlink" title="0x01漏洞原理"></a>0x01漏洞原理</h1><p>基本概念是覆盖内核调度表中的指针 将其指向shellcode的地址</p>
+<h2 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h2><p>这个函数申请完内存后 在漏洞版本下 未检查what和where指针 而是直接引用 所以我们如果控制了what指针地址的值指向shellcode就可以完成利用<br><strong>TriggerArbitraryWrite</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">NTSTATUS</span><br><span class="line">TriggerArbitraryWrite(</span><br><span class="line">    _In_ PWRITE_WHAT_WHERE UserWriteWhatWhere</span><br><span class="line">)</span><br><span class="line">&#123;</span><br><span class="line">    PULONG_PTR What &#x3D; NULL;</span><br><span class="line">    PULONG_PTR Where &#x3D; NULL;</span><br><span class="line">    NTSTATUS Status &#x3D; STATUS_SUCCESS;</span><br><span class="line"></span><br><span class="line">    PAGED_CODE();</span><br><span class="line"></span><br><span class="line">    __try</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Verify if the buffer resides in user mode</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        ProbeForRead((PVOID)UserWriteWhatWhere, sizeof(WRITE_WHAT_WHERE), (ULONG)__alignof(UCHAR));</span><br><span class="line"></span><br><span class="line">        What &#x3D; UserWriteWhatWhere-&gt;What;</span><br><span class="line">        Where &#x3D; UserWriteWhatWhere-&gt;Where;</span><br><span class="line"></span><br><span class="line">        DbgPrint(&quot;[+] UserWriteWhatWhere: 0x%p\n&quot;, UserWriteWhatWhere);</span><br><span class="line">        DbgPrint(&quot;[+] WRITE_WHAT_WHERE Size: 0x%X\n&quot;, sizeof(WRITE_WHAT_WHERE));</span><br><span class="line">        DbgPrint(&quot;[+] UserWriteWhatWhere-&gt;What: 0x%p\n&quot;, What);</span><br><span class="line">        DbgPrint(&quot;[+] UserWriteWhatWhere-&gt;Where: 0x%p\n&quot;, Where);</span><br><span class="line"></span><br><span class="line">#ifdef SECURE</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Secure Note: This is secure because the developer is properly validating if address</span><br><span class="line">        &#x2F;&#x2F; pointed by &#39;Where&#39; and &#39;What&#39; value resides in User mode by calling ProbeForRead()&#x2F;</span><br><span class="line">        &#x2F;&#x2F; ProbeForWrite() routine before performing the write operation</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        ProbeForRead((PVOID)What, sizeof(PULONG_PTR), (ULONG)__alignof(UCHAR));</span><br><span class="line">        ProbeForWrite((PVOID)Where, sizeof(PULONG_PTR), (ULONG)__alignof(UCHAR));</span><br><span class="line"></span><br><span class="line">        *(Where) &#x3D; *(What);</span><br><span class="line">#else</span><br><span class="line">        DbgPrint(&quot;[+] Triggering Arbitrary Write\n&quot;);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line">        &#x2F;&#x2F; Vulnerability Note: This is a vanilla Arbitrary Memory Overwrite vulnerability</span><br><span class="line">        &#x2F;&#x2F; because the developer is writing the value pointed by &#39;What&#39; to memory location</span><br><span class="line">        &#x2F;&#x2F; pointed by &#39;Where&#39; without properly validating if the values pointed by &#39;Where&#39;</span><br><span class="line">        &#x2F;&#x2F; and &#39;What&#39; resides in User mode</span><br><span class="line">        &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">        *(Where) &#x3D; *(What);        &#x2F;&#x2F;漏洞点</span><br><span class="line">#endif</span><br><span class="line">    &#125;</span><br><span class="line">    __except (EXCEPTION_EXECUTE_HANDLER)</span><br><span class="line">    &#123;</span><br><span class="line">        Status &#x3D; GetExceptionCode();</span><br><span class="line">        DbgPrint(&quot;[-] Exception Code: 0x%X\n&quot;, Status);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;</span><br><span class="line">    &#x2F;&#x2F; There is one more hidden vulnerability. Find it out.</span><br><span class="line">    &#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">    return Status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
+<h1 id="0x02漏洞分析"><a href="#0x02漏洞分析" class="headerlink" title="0x02漏洞分析"></a>0x02漏洞分析</h1><p>先下断点偏移计算就用之前的方法就可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bp HEVD!TriggerArbitraryWrite+71</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -165,364 +176,54 @@
 		</ul>
 	</div>
 
-          
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-10-25T08:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HEVD内核漏洞学习(6)空指针解引用</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">HEVD内核漏洞学习(6)空指针解引用</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-24T08:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(5)池溢出</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-23T15:12:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(4)-整数溢出</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/" class="archive-article-date">
-  	<time datetime="2020-10-23T07:23:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/">HEVD内核漏洞学习-3-类型混淆</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/" class="archive-article-date">
-  	<time datetime="2020-10-22T13:52:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/">HEVD内核漏洞学习(2)-UAF</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-22T05:55:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(1)-内核栈溢出</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/19/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-19T08:01:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/19/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-4113win32k.sys内核漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-11T03:01:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-1767WindowsAFD.sys内核漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-08T01:00:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-1347UAF漏洞分析</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2020/page/2/">2</a><a class="extend next" rel="next" href="/archives/2020/page/2/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -546,8 +247,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
