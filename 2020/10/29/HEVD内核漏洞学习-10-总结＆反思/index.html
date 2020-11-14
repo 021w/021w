@@ -42,6 +42,7 @@
 
   
 
+  <script src="http://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>
 <meta name="generator" content="Hexo 5.0.0"></head>
 
 <body>
@@ -236,11 +237,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/11/05/CVE-2015-0057/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/11/13/CVE-2014-4113win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          CVE-2015-0057
+          CVE-2014-4113win32k.sys内核漏洞分析
         
       </div>
     </a>
@@ -286,18 +287,21 @@
           </div>
         </div>
       </div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2020 021w
-			<span id="busuanzi_container_site_pv">    本站总访问量<span id="busuanzi_value_site_pv"></span>次</span>
-			<span id="busuanzi_container_site_uv">  本站访客数<span id="busuanzi_value_site_uv"></span>人次</span>
+        <script type="text/javascript">
+	var href = window.location.href; // 当前页面地址
 
-    	</div>
-    </div>
-  </div>
-</footer>
+	function handleCallback(jsonData) {
+		console.log("jsonData = " + jsonData);
+		var arrival = jsonData.arrival;
+		document.getElementById("page_view").innerHTML = arrival;
+	}
+	
+	var src = "https://106.14.152.93:8443/third/githubio/arrival?callback=handleCallback&articleUrl="
+         + href + "&ip=" + returnCitySN["cip"];
+	
+	document.write("<script type=\"text/javascript\" src=\"" + src + "\"><\/script>");
+  </script>
+
     </div>
     <script>
 	var yiliaConfig = {
