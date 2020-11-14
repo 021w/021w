@@ -143,7 +143,14 @@
   
 
         
-        <a href="/categories/index.html" class="archive-article-date">
+         
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
+              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
+        </span>
+
+
+<a href="/categories/index.html" class="archive-article-date">
   	<time datetime="2020-09-30T02:10:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
 </a>
         
@@ -203,20 +210,17 @@
           </div>
         </div>
       </div>
-        <script type="text/javascript">
-	var href = window.location.href; // 当前页面地址
-
-	function handleCallback(jsonData) {
-		console.log("jsonData = " + jsonData);
-		var arrival = jsonData.arrival;
-		document.getElementById("page_view").innerHTML = arrival;
-	}
-	
-	var src = "https://106.14.152.93:8443/third/githubio/arrival?callback=handleCallback&articleUrl="
-         + href + "&ip=" + returnCitySN["cip"];
-	
-	document.write("<script type=\"text/javascript\" src=\"" + src + "\"><\/script>");
-  </script>
+      
+        <!-- 不蒜子统计 -->
+        <span id="busuanzi_container_site_pv">
+                本站总访问量<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv" style='display:none'>
+                本站访客数<span id="busuanzi_value_site_uv"></span>人
+        </span>
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
 
     </div>
     <script>
