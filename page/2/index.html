@@ -131,31 +131,31 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-HEVD内核漏洞学习-8-未初始化栈变量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-HEVD内核漏洞学习-3-类型混淆" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">HEVD内核漏洞学习(8)未初始化栈变量</a>
+      <a class="article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/">HEVD内核漏洞学习-3-类型混淆</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/" class="archive-article-date">
-  	<time datetime="2020-10-28T02:56:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/" class="archive-article-date">
+  	<time datetime="2020-10-23T07:23:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>这一系列就快结束了 这次是未初始化栈变量 开始吧</p>
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 属于一种冷门漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了</p>
         
-          <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/#more">more >></a>
         
       
 
@@ -179,7 +179,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/">展开全文 >></a>
         </p>
       
 
@@ -209,31 +209,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-8-未初始化栈变量/HEVD内核漏洞学习-8-未初始化栈变量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-HEVD内核漏洞学习-2-UAF" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">HEVD内核漏洞学习(8)未初始化栈变量</a>
+      <a class="article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/">HEVD内核漏洞学习(2)-UAF</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/" class="archive-article-date">
-  	<time datetime="2020-10-28T02:56:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/" class="archive-article-date">
+  	<time datetime="2020-10-22T13:52:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>这一系列就快结束了 这次是未初始化栈变量 开始吧</p>
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>这是Windows kernel exploit系列的第二部分 先从UAF开始 因为之前有过pwn的经验 所以堆UAF的原理也是清楚 所以我也就直接从漏洞开始了</p>
         
-          <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/#more">more >></a>
         
       
 
@@ -257,7 +257,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-2-UAF/">展开全文 >></a>
         </p>
       
 
@@ -287,31 +287,32 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-7-任意内存覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-HEVD内核漏洞学习-1-内核栈溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">HEVD内核漏洞学习(7)任意内存覆盖</a>
+      <a class="article-title" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(1)-内核栈溢出</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/" class="archive-article-date">
-  	<time datetime="2020-10-26T14:43:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
+<a href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/" class="archive-article-date">
+  	<time datetime="2020-10-22T05:55:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第七篇了 讲任意内存覆盖 对于本节还是容易理解的</p>
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>搭环境的话有很多教程 其实前面很多师傅都讲过 TJ师傅讲过 我的学习过程也是根据TJ师傅来的 途中也经过了wjllz和0x2l师傅的指导 人很好的两位师傅 不过搭环境是真的头疼。。。。。</p>
+<p>从现在开始写windows内核系列的漏洞学习 第一部分开始栈的东西 内核栈溢出部分的学习 内核栈和用户栈是分开的 一般用户程序无法直接访问内核栈空间 由于内核栈的空间往往很有限 所以往往就会发生溢出的可能然后直接造成蓝屏导致系统崩溃（蓝屏？）  不过后面微软引入GS机制后 基本上关于栈的攻击就结束了</p>
         
-          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/#more">more >></a>
         
       
 
@@ -335,7 +336,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/22/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-1-%E5%86%85%E6%A0%B8%E6%A0%88%E6%BA%A2%E5%87%BA/">展开全文 >></a>
         </p>
       
 
@@ -365,31 +366,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-7-任意内存覆盖/HEVD内核漏洞学习-7-任意内存覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2014-1767WindowsAFD-sys内核漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">HEVD内核漏洞学习(7)任意内存覆盖</a>
+      <a class="article-title" href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2014-1767WindowsAFD.sys内核漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/" class="archive-article-date">
-  	<time datetime="2020-10-26T14:43:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
+<a href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-10-11T03:01:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-11</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第七篇了 讲任意内存覆盖 对于本节还是容易理解的</p>
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2014-1767是WindowsAFD.sys双重释放漏洞进行内核提权 该漏洞获得2014年“最佳提权漏洞奖” 影响蛮大的 接下来分析下该漏洞</p>
         
-          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -403,7 +404,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -413,7 +414,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/11/CVE-2014-1767WindowsAFD-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -443,31 +444,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-6-空指针解引用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2013-1347UAF漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">HEVD内核漏洞学习(6)空指针解引用</a>
+      <a class="article-title" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-1347UAF漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-10-25T08:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
+<a href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-10-08T01:00:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-08</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第六部分了 空指针解引用是程序中常见的一类动态内存错误 啊 还是直接开始正文吧</p>
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2013-1347是IE8打开指定页面后会在本地加载mshtml.dll和jscript两个动态链接库来解析 触发恶意脚本</p>
         
-          <a class="article-more-a" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -481,7 +482,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -491,7 +492,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -521,31 +522,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-6-空指针解引用/HEVD内核漏洞学习-6-空指针解引用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2013-2551整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">HEVD内核漏洞学习(6)空指针解引用</a>
+      <a class="article-title" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-2551整数溢出漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
-  	<time datetime="2020-10-25T08:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
+<a href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-10-04T01:22:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第六部分了 空指针解引用是程序中常见的一类动态内存错误 啊 还是直接开始正文吧</p>
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2013-2551是由于负责VML解析的模块VGX.DLL，在处理&lt;v:stroke&gt;标签的dashstyle.array.length属性时，没有对传入的参数进行完备验证而导致的整数溢出。攻击者利用这个漏洞能够对任意地址进行读写操作——通过读取敏感内存信息、改写对象虚函数表，就能够完美绕过重重内存防护机制实现任意代码执行。</p>
         
-          <a class="article-more-a" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -559,7 +560,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -569,7 +570,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -599,31 +600,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-5-池溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2012-0774整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(5)池溢出</a>
+      <a class="article-title" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0774整数溢出漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-24T08:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
+<a href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-09-30T06:05:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>现在开始第五部分的池溢出部分 池的话跟堆有些相似 但又有不同 需要进一步了解的 <a target="_blank" rel="noopener" href="https://dl.packetstormsecurity.net/papers/general/kernelpool-exploitation.pdf">看这里</a> 有人翻译了 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38025365/article/details/106259634">这里</a> 还有个好理解的 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/flycat-2016/p/5449738.html">这儿</a> 看完应该就差不多了</p>
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2012-0774是Adobe Acrobat和Reader在True Type Font (TTF)处理的实现上存在整数溢出漏洞，攻击者可利用此漏洞执行任意代码。</p>
         
-          <a class="article-more-a" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -637,7 +638,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -647,7 +648,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -677,31 +678,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-5-池溢出/HEVD内核漏洞学习-5-池溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2012-1876堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(5)池溢出</a>
+      <a class="article-title" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-1876堆漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-24T08:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
+<a href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-09-25T05:35:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-25</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>现在开始第五部分的池溢出部分 池的话跟堆有些相似 但又有不同 需要进一步了解的 <a target="_blank" rel="noopener" href="https://dl.packetstormsecurity.net/papers/general/kernelpool-exploitation.pdf">看这里</a> 有人翻译了 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38025365/article/details/106259634">这里</a> 还有个好理解的 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/flycat-2016/p/5449738.html">这儿</a> 看完应该就差不多了</p>
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>该IE浏览器漏洞的成因在mshtml.dll这个模块的CTableLayout::CalculateMinMax函数里，程序在执行时会以HTML代码中的元素span属性作为循环控制次数向堆中写入数据。如果此span值设置不当，那么就会引发堆溢出问题。</p>
         
-          <a class="article-more-a" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -715,7 +716,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -725,7 +726,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -755,31 +756,32 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-4-整数溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2013-0077堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(4)-整数溢出</a>
+      <a class="article-title" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-0077堆漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-23T15:12:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
+<a href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-09-22T09:53:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-22</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第四部分是整数溢出 整数溢出在pwn里面也接触过 如果有一定的pwn功底的话 理解起来还是很快的</p>
+        <h1 id="0X00：-漏洞描述"><a href="#0X00：-漏洞描述" class="headerlink" title="0X00： 漏洞描述"></a>0X00： 漏洞描述</h1><p>exploit-db 漏洞公布站点上发布了 QQplayer.exe 3.7.892 m2p quartz.dll Heap Pointer OverWrite PoC，后被人提交至乌云。这个漏洞与 QQplayer.exe 没有任何关系</p>
+<p>CVE-2013-0077是系统的quartz.dll在解析.m2p文件头时没有限制数据的大小 导致复制的数据超出了申请的栈空间</p>
         
-          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -793,7 +795,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -803,7 +805,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -833,31 +835,31 @@
 
 
   
-    <article id="post-HEVD内核漏洞学习-4-整数溢出/HEVD内核漏洞学习-4-整数溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2012-0003堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(4)-整数溢出</a>
+      <a class="article-title" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0003 Microsoft Windows Media Player winmm.dll MIDI文件堆溢出漏洞</a>
     </h1>
   
 
         
          
 
-<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
-  	<time datetime="2020-10-23T15:12:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
+<a href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-09-13T06:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-13</time>
 </a>
         
       </header>
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第四部分是整数溢出 整数溢出在pwn里面也接触过 如果有一定的pwn功底的话 理解起来还是很快的</p>
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2012-0003是微软的多媒体库 winmm.dll 在处理 MIDI 文件时，由于对数据处理不当导致的堆溢出，攻击者可在网页中嵌入恶意构造的 MIDI 文件来远程执行任意代码。</p>
         
-          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -871,7 +873,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
         		</li>
       		
 		</ul>
@@ -881,7 +883,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -913,7 +915,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
