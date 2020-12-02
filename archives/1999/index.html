@@ -6,19 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>反调试技术详解 | 021w</title>
+  <title>Archives: 1999 | 021w</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0x00 前言最近突然看到以前的一些知识 想到一些反调试的东西 于是想总结一些关于这方面的知识 0x01 方法IsDebuggerPresent这可能是接触到的第一个反调试技术 最早接触在&lt;&lt;使用OllyDbg从零开始Cracking&gt;&gt;这本书就接触过了 这个函数会检查用户模式的调试器是否正在调试该进程  首先看看PEB结构体的内容  1234ntdll!_PEB   +0">
-<meta property="og:type" content="article">
-<meta property="og:title" content="反调试技术详解">
-<meta property="og:url" content="http://yoursite.com/2020/11/25/%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="021w">
+<meta property="og:url" content="http://yoursite.com/archives/1999/index.html">
 <meta property="og:site_name" content="021w">
-<meta property="og:description" content="0x00 前言最近突然看到以前的一些知识 想到一些反调试的东西 于是想总结一些关于这方面的知识 0x01 方法IsDebuggerPresent这可能是接触到的第一个反调试技术 最早接触在&lt;&lt;使用OllyDbg从零开始Cracking&gt;&gt;这本书就接触过了 这个函数会检查用户模式的调试器是否正在调试该进程  首先看看PEB结构体的内容  1234ntdll!_PEB   +0">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-11-25T14:27:13.000Z">
-<meta property="article:modified_time" content="2020-11-26T02:58:52.237Z">
 <meta property="article:author" content="021w">
-<meta property="article:tag" content="杂记">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="021w" type="application/atom+xml">
@@ -134,106 +129,38 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-反调试技术详解" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      反调试技术详解
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/1999" class="archive-year">1999</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	 
+
+<a href="/1999/11/25/%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3/" class="archive-article-date">
+  	<time datetime="1999-11-25T14:27:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>1999-11-25</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/1999/11/25/%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3/">反调试技术详解</a>
     </h1>
   
 
-        
-         
-        <!-- 不蒜子统计 -->
-        <span id="busuanzi_container_page_pv" style='display:none' class="archive-article-date">
-              <i class="icon-smile icon"></i> 阅读数：<span id="busuanzi_value_page_pv"></span>次
-        </span>
-
-
-<a href="/2020/11/25/%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF%E8%AF%A6%E8%A7%A3/" class="archive-article-date">
-  	<time datetime="2020-11-25T14:27:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-25</time>
-</a>
-        
-      </header>
-    
-	<!-- 目录内容 -->
-		
-<!-- 目录内容结束 -->
-	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>最近突然看到以前的一些知识 想到一些反调试的东西 于是想总结一些关于这方面的知识</p>
-<h1 id="0x01-方法"><a href="#0x01-方法" class="headerlink" title="0x01 方法"></a>0x01 方法</h1><h2 id="IsDebuggerPresent"><a href="#IsDebuggerPresent" class="headerlink" title="IsDebuggerPresent"></a>IsDebuggerPresent</h2><p>这可能是接触到的第一个反调试技术 最早接触在&lt;&lt;使用OllyDbg从零开始Cracking&gt;&gt;这本书就接触过了 这个函数会检查用户模式的调试器是否正在调试该进程 </p>
-<p>首先看看PEB结构体的内容 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ntdll!_PEB</span><br><span class="line">   +0x000 InheritedAddressSpace : UChar</span><br><span class="line">   +0x001 ReadImageFileExecOptions : UChar</span><br><span class="line">   +0x002 BeingDebugged    : UChar</span><br></pre></td></tr></table></figure>
-<p>32位的IsDebuggerPresent函数代码 我们可以看出这个函数的作用是检测PEB结构体的第三个字段的内容 在OD中可以看到这个值的 不过现在优化过的OD已经可以自动绕过这个检测了 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.text:0DD01E2E                 mov     eax, large fs:18h</span><br><span class="line">.text:0DD01E34                 mov     eax, [eax+30h]</span><br><span class="line">.text:0DD01E37                 movzx   eax, byte ptr [eax+2]</span><br><span class="line">.text:0DD01E3B                 retn</span><br></pre></td></tr></table></figure>
-
-<p>64位的IsDebuggerPresent函数也有异曲同工之妙 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.text:000007FF3888CAA0                 mov     rax, gs:30h</span><br><span class="line">.text:000007FF3888CAA9                 mov     rcx, [rax+60h]</span><br><span class="line">.text:000007FF3888CAAD                 movzx   eax, byte ptr [rcx+2]</span><br><span class="line">.text:000007FF3888CAB1                 retn</span><br></pre></td></tr></table></figure>
-<p>绕过的原理是 在调用IsDebuggerPresent函数之前 将BeingDebugged设置为0</p>
-<p>对于32位进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov eax, dword ptr fs:[0x30]  </span><br><span class="line">mov byte ptr ds:[eax+2], 0</span><br></pre></td></tr></table></figure>
-<p>64位进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DWORD64 dwpeb &#x3D; __readgsqword(0x60);</span><br><span class="line">*((PBYTE)(dwpeb + 2)) &#x3D; 0;</span><br></pre></td></tr></table></figure>
-<h2 id="TLS回调"><a href="#TLS回调" class="headerlink" title="TLS回调"></a>TLS回调</h2><p>检查main函数中是否存在调试器并不是最好的办法 并且在分析反汇编代码时首先会观察到这个位置 在main中设置的检查机制可以通过nop指令擦除 从而接触防护机制 如果使用了CRT库 mian线程在将控制权交给main函数之前已经有个调用栈 可以在TLS回调中检查是否存在调试器 这是在可执行模块入口点调用之前会调用的函数</p>
-<h2 id="NtGlobalFlag"><a href="#NtGlobalFlag" class="headerlink" title="NtGlobalFlag"></a>NtGlobalFlag</h2><p>在Windows NT中 NtGlobalFlag全局变量中存在一组标志 整个系统都可以使用这个变量 为了判断进程是否由调试器启动 我们可以检查PEB结构中的NtGlobalFlag字段 32位的偏移为0x70 64位的为0xbc</p>
-<p>绕过方法是在检查前将被调试进程的PEB的NtGlobalFlag字段设置为0</p>
-<h2 id="堆标志以及ForceFlags"><a href="#堆标志以及ForceFlags" class="headerlink" title="堆标志以及ForceFlags"></a>堆标志以及ForceFlags</h2><p>PEB结构中包含一个指向进程堆（_HEAP结构）的一个指针</p>
-<p>32位系统</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kd&gt; dt _PEB ProcessHeap</span><br><span class="line">nt!_PEB</span><br><span class="line">   +0x018 ProcessHeap : Ptr32 Void</span><br><span class="line">kd&gt; dt _HEAP Flags ForceFlags</span><br><span class="line">nt!_HEAP</span><br><span class="line">   +0x040 Flags      : Uint4B</span><br><span class="line">   +0x044 ForceFlags : Uint4B</span><br></pre></td></tr></table></figure>
-<p>64位系统</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kd&gt; dt _PEB ProcessHeap</span><br><span class="line">nt!_PEB</span><br><span class="line">   +0x030 ProcessHeap : Ptr64 Void</span><br><span class="line">kd&gt; dt _HEAP Flags ForceFlags</span><br><span class="line">nt!_HEAP</span><br><span class="line">   +0x070 Flags      : Uint4B</span><br><span class="line">   +0x074 ForceFlags : Uint4B</span><br></pre></td></tr></table></figure>
-<p>如果正在被调试 那么Flags和ForceFlags字段都会被设置成与调试相关的值：</p>
-<p>1、如果Flags字段没有设置HEAP_GROWABLE（0x00000002标志） 那么该进程正在被调试</p>
-<p>2、如果ForceFlags的值不为0 那么该进程正在被调试</p>
-<p>绕过方法是设置为0</p>
-<h2 id="Trap标志"><a href="#Trap标志" class="headerlink" title="Trap标志"></a>Trap标志</h2><p>TF标志位 设置为1就会产生单步异常 即就是我们经常使用的单步执行</p>
-<h2 id="CheckRemoteDebuggerPresent以及NtQueryInformationProcess"><a href="#CheckRemoteDebuggerPresent以及NtQueryInformationProcess" class="headerlink" title="CheckRemoteDebuggerPresent以及NtQueryInformationProcess"></a>CheckRemoteDebuggerPresent以及NtQueryInformationProcess</h2><p>CheckRemoteDebuggerPresent检查进程是否被另外一个进程调试 其中会调用NtQueryInformationProcess函数</p>
-<p>当NtQueryInformationProcess函数的第二个参数为7时 CheckRemoteDebuggerPresent函数会被赋予DebugPort值</p>
-<p>绕过的方法是 替换NtQueryInformationProcess函数的返回值</p>
-<h2 id="基于NtQueryInformationProcess的其他反调试技术"><a href="#基于NtQueryInformationProcess的其他反调试技术" class="headerlink" title="基于NtQueryInformationProcess的其他反调试技术"></a>基于NtQueryInformationProcess的其他反调试技术</h2><h3 id="ProcessDebugObjectHandle"><a href="#ProcessDebugObjectHandle" class="headerlink" title="ProcessDebugObjectHandle"></a>ProcessDebugObjectHandle</h3><p>从xp开始 系统会为被调试进程创建一个“调试对象” 如果存在 就证明正在被调试</p>
-<p>绕过方法 将ProcessDebugObjectHandle设置为0</p>
-<h3 id="ProcessDebugFlags"><a href="#ProcessDebugFlags" class="headerlink" title="ProcessDebugFlags"></a>ProcessDebugFlags</h3><p>检查该标志时 会返回EPROCESS内核结构中NoDebugInherit位的取反值 如果NtQueryInformationProcess函数的返回值为0 那么该进程正在被调试</p>
-<p>绕过方法 将ProcessDebugFlags设置为1</p>
-<h3 id="ProcessBasicInformation"><a href="#ProcessBasicInformation" class="headerlink" title="ProcessBasicInformation"></a>ProcessBasicInformation</h3><p>当使用ProcessBasicInformation标志来调用NtQueryInformationProcess函数时 就会返回PROCESS_BASIC_INFORMATION结构体 这个结构体获取了父进程的名称 将其与常用调试器进行对比</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct _PROCESS_BASIC_INFORMATION &#123;</span><br><span class="line">    NTSTATUS ExitStatus;</span><br><span class="line">    PVOID PebBaseAddress;</span><br><span class="line">    ULONG_PTR AffinityMask;</span><br><span class="line">    KPRIORITY BasePriority;</span><br><span class="line">    HANDLE UniqueProcessId;</span><br><span class="line">    HANDLE InheritedFromUniqueProcessId;</span><br><span class="line">&#125; PROCESS_BASIC_INFORMATION, *PPROCESS_BASIC_INFORMATION;</span><br></pre></td></tr></table></figure>
-<p>绕过方法 对于ProcessBasicInformation 将InheritedFromUniqueProcessId的值修改为其他进程的ID</p>
-<h2 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h2><p>在调试中我们经常使用断点来调试程序 我们可以通过检测断点来检测是否被调试</p>
-<h3 id="软件断点"><a href="#软件断点" class="headerlink" title="软件断点"></a>软件断点</h3><p>软件断点即int 3指令 向断点位置写入0xcc 当cpu执行指令时 产生中断 为了检测断点是否存在 可以计算函数的校验和</p>
-<p>绕过方法 找到计算校验的代码 将其的返回值替换为存储校验和的所有变量的值</p>
-<h3 id="硬件断点"><a href="#硬件断点" class="headerlink" title="硬件断点"></a>硬件断点</h3><p>设置好断点之后 调试器将我们的地址放入4个（DR0-DR3）中的一个 其中包含断点的线性地址 系统在转换为物理地址之前比较这个地址 DR6描述调试状态 DR7通过访问模式来定义断点激活模式 </p>
-<p>绕过方法 将Dr0-Dr4寄存器的值设置为0 使用SetThreadContext函数来重设硬件断点 </p>
-<h2 id="SEH"><a href="#SEH" class="headerlink" title="SEH"></a>SEH</h2><p>异常处理机制在程序内部处理异常 无需操作系统的接入 当操作系统创建新进程时 系统会将SEH帧加入其中 如果程序正在被调试 产生int 3中断后 调试器会拦截控制权 否则将会交给SEH</p>
-<p>绕过方法 没有。。。只能通过绕过这些函数来 假如多个函数中都加入了SEH机制 那么将会很麻烦</p>
-<h2 id="VEH"><a href="#VEH" class="headerlink" title="VEH"></a>VEH</h2><p>与SEH机制相似 区别是系统使用已公开的函数来设置并删除VEH处理函数 当调试时产生中断时 出现异常 交给调试器 否则将会交给VEH 不过VEH时跟硬件断点相关的</p>
-<p>绕过方法 通过函数hook来绕过硬件断点检测</p>
-<h2 id="NtSetInformationThread：从调试器中隐藏线程"><a href="#NtSetInformationThread：从调试器中隐藏线程" class="headerlink" title="NtSetInformationThread：从调试器中隐藏线程"></a>NtSetInformationThread：从调试器中隐藏线程</h2><p>NtSetInformationThread函数的一个线程信息类：ThreadHideFromDebugger 如果某个线程设置了该标志 那么该线程会停止发生关于调试事件的通知</p>
-<p>win7 32位下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kd&gt; dt _ETHREAD HideFromDebugger</span><br><span class="line">nt!_ETHREAD</span><br><span class="line">   +0x280 HideFromDebugger : Pos 2, 1 Bit</span><br></pre></td></tr></table></figure>
-<p>绕过方法 使用hook完成 需要hook NtSetInformationThread函数调用 在被hook的函数中 如果正确调用的话就会返回STATUS_SUCCESS 并且不会将控制权交给原始的NtSetInformationThread函数 </p>
-<h2 id="NtCreateThreadEx"><a href="#NtCreateThreadEx" class="headerlink" title="NtCreateThreadEx"></a>NtCreateThreadEx</h2><p>函数原型：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">NTSTATUS NTAPI NtCreateThreadEx (</span><br><span class="line">    _Out_    PHANDLE              ThreadHandle,</span><br><span class="line">    _In_     ACCESS_MASK          DesiredAccess,</span><br><span class="line">    _In_opt_ POBJECT_ATTRIBUTES   ObjectAttributes,</span><br><span class="line">    _In_     HANDLE               ProcessHandle,</span><br><span class="line">    _In_     PVOID                StartRoutine,</span><br><span class="line">    _In_opt_ PVOID                Argument,</span><br><span class="line">    _In_     ULONG                CreateFlags,</span><br><span class="line">    _In_opt_ ULONG_PTR            ZeroBits,</span><br><span class="line">    _In_opt_ SIZE_T               StackSize,</span><br><span class="line">    _In_opt_ SIZE_T               MaximumStackSize,</span><br><span class="line">    _In_opt_ PVOID                AttributeList</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p>其中的CreateFlags标志位有以下参数 当线程设置flag位为4时 即为调试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#define THREAD_CREATE_FLAGS_CREATE_SUSPENDED 0x00000001</span><br><span class="line">#define THREAD_CREATE_FLAGS_SKIP_THREAD_ATTACH 0x00000002</span><br><span class="line">#define THREAD_CREATE_FLAGS_HIDE_FROM_DEBUGGER 0x00000004</span><br><span class="line">#define THREAD_CREATE_FLAGS_HAS_SECURITY_DESCRIPTOR 0x00000010</span><br><span class="line">#define THREAD_CREATE_FLAGS_ACCESS_CHECK_IN_TARGET 0x00000020</span><br><span class="line">#define THREAD_CREATE_FLAGS_INITIAL_THREAD 0x00000080</span><br></pre></td></tr></table></figure>
-
-<p>绕过方法 使用hook在函数中重置THREAD_CREATE_FLAGS_HIDE_FROM_DEBUGGER的值</p>
-<h2 id="句柄跟踪"><a href="#句柄跟踪" class="headerlink" title="句柄跟踪"></a>句柄跟踪</h2><p>xp开始具备内核对象句柄跟踪机制 当跟踪模式启动后 与句柄所有操作都会被保存到循环缓冲区中 并且当使用不存在的句柄时 就会出现EXCEPTION_INVALID_HANDLE异常 如果没有调试器 CloseHandle函数会返回FALSE</p>
-<h2 id="篡改堆栈段"><a href="#篡改堆栈段" class="headerlink" title="篡改堆栈段"></a>篡改堆栈段</h2><p>当修改ss堆栈段（stack segment register）寄存器时 调试器会跳过指令跟踪</p>
-<h2 id="调试信息"><a href="#调试信息" class="headerlink" title="调试信息"></a>调试信息</h2><p>win10开始 修改了OutputDebugstring函数的实现 改成带有特定参数的RaiseExcprtion调用 因此现在调试输出异常必须由调试器来处理</p>
-<p>使用两种异常类型来检测是否存在调试器 分别为DBG_PRINTEXCEPTION_C（0x40010006）以及DBG_PRINTEXCEPTION_W（0x4001000A）</p>
-<h1 id="0x02-后记"><a href="#0x02-后记" class="headerlink" title="0x02 后记"></a>0x02 后记</h1><p>基本介绍了反调试的方法和简单说了下绕过的方法 在调试的时候需要了解到这些道理</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -245,65 +172,19 @@
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2020/11/27/CVE-2017-0263win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          CVE-2017-0263win32k.sys内核漏洞分析
-        
-      </div>
-    </a>
   
   
-    <a href="/2020/11/20/CVE-2015-2546win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CVE-2015-2546win32k.sys内核漏洞分析</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -326,8 +207,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
