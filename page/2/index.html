@@ -131,6 +131,318 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-HEVD内核漏洞学习-7-任意内存覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">HEVD内核漏洞学习(7)任意内存覆盖</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/" class="archive-article-date">
+  	<time datetime="2020-10-26T14:43:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第七篇了 讲任意内存覆盖 对于本节还是容易理解的</p>
+        
+          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-HEVD内核漏洞学习-6-空指针解引用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">HEVD内核漏洞学习(6)空指针解引用</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/" class="archive-article-date">
+  	<time datetime="2020-10-25T08:08:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第六部分了 空指针解引用是程序中常见的一类动态内存错误 啊 还是直接开始正文吧</p>
+        
+          <a class="article-more-a" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/25/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-6-%E7%A9%BA%E6%8C%87%E9%92%88%E8%A7%A3%E5%BC%95%E7%94%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-HEVD内核漏洞学习-5-池溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(5)池溢出</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
+  	<time datetime="2020-10-24T08:56:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>现在开始第五部分的池溢出部分 池的话跟堆有些相似 但又有不同 需要进一步了解的 <a target="_blank" rel="noopener" href="https://dl.packetstormsecurity.net/papers/general/kernelpool-exploitation.pdf">看这里</a> 有人翻译了 <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38025365/article/details/106259634">这里</a> 还有个好理解的 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/flycat-2016/p/5449738.html">这儿</a> 看完应该就差不多了</p>
+        
+          <a class="article-more-a" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/24/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-5-%E6%B1%A0%E6%BA%A2%E5%87%BA/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-HEVD内核漏洞学习-4-整数溢出" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">HEVD内核漏洞学习(4)-整数溢出</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/" class="archive-article-date">
+  	<time datetime="2020-10-23T15:12:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第四部分是整数溢出 整数溢出在pwn里面也接触过 如果有一定的pwn功底的话 理解起来还是很快的</p>
+        
+          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-4-%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-HEVD内核漏洞学习-3-类型混淆" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -600,319 +912,6 @@
 
 
   
-    <article id="post-CVE-2012-0774整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0774整数溢出漏洞分析</a>
-    </h1>
-  
-
-        
-         
-
-<a href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-09-30T06:05:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
-</a>
-        
-      </header>
-    	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2012-0774是Adobe Acrobat和Reader在True Type Font (TTF)处理的实现上存在整数溢出漏洞，攻击者可利用此漏洞执行任意代码。</p>
-        
-          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CVE-2012-1876堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-1876堆漏洞分析</a>
-    </h1>
-  
-
-        
-         
-
-<a href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-09-25T05:35:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-25</time>
-</a>
-        
-      </header>
-    	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>该IE浏览器漏洞的成因在mshtml.dll这个模块的CTableLayout::CalculateMinMax函数里，程序在执行时会以HTML代码中的元素span属性作为循环控制次数向堆中写入数据。如果此span值设置不当，那么就会引发堆溢出问题。</p>
-        
-          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CVE-2013-0077堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-0077堆漏洞分析</a>
-    </h1>
-  
-
-        
-         
-
-<a href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-09-22T09:53:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-22</time>
-</a>
-        
-      </header>
-    	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0X00：-漏洞描述"><a href="#0X00：-漏洞描述" class="headerlink" title="0X00： 漏洞描述"></a>0X00： 漏洞描述</h1><p>exploit-db 漏洞公布站点上发布了 QQplayer.exe 3.7.892 m2p quartz.dll Heap Pointer OverWrite PoC，后被人提交至乌云。这个漏洞与 QQplayer.exe 没有任何关系</p>
-<p>CVE-2013-0077是系统的quartz.dll在解析.m2p文件头时没有限制数据的大小 导致复制的数据超出了申请的栈空间</p>
-        
-          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CVE-2012-0003堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0003 Microsoft Windows Media Player winmm.dll MIDI文件堆溢出漏洞</a>
-    </h1>
-  
-
-        
-         
-
-<a href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-09-13T06:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-13</time>
-</a>
-        
-      </header>
-    	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2012-0003是微软的多媒体库 winmm.dll 在处理 MIDI 文件时，由于对数据处理不当导致的堆溢出，攻击者可在网页中嵌入恶意构造的 MIDI 文件来远程执行任意代码。</p>
-        
-          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
@@ -1019,6 +1018,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">杂记</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">内核分析</a>
               </li>
             
             <div class="clearfix"></div>
