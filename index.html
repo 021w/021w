@@ -209,6 +209,140 @@
 
 
   
+    <article id="post-CVE-2018-8120win32k-sys内核漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/24/CVE-2018-8120win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2018-8120win32k.sys内核漏洞分析</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2021/02/24/CVE-2018-8120win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2021-02-24T08:19:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-24</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00：-前言"><a href="#0x00：-前言" class="headerlink" title="0x00： 前言"></a>0x00： 前言</h1><p><code>CVE-2018-8120</code>是<code>win32k</code>的空指针解引用内核提权漏洞 漏洞存在于函数<code>SetImeInfoEx</code>中 在没有对目标窗口<code>tagWINDOWSTATION</code> 对象的指针成员域 <code>spklList</code> 指向地址进行有效性校验的情况下 对该地址直接进行读取访问</p>
+<h1 id="0x01：分析环境"><a href="#0x01：分析环境" class="headerlink" title="0x01：分析环境"></a>0x01：分析环境</h1><p>目标系统：Windows 7 32位</p>
+<p>调试器：WinDbg</p>
+<p>反汇编器：IDA Pro</p>
+<h1 id="0x02：漏洞分析"><a href="#0x02：漏洞分析" class="headerlink" title="0x02：漏洞分析"></a>0x02：漏洞分析</h1><h2 id="补丁分析"><a href="#补丁分析" class="headerlink" title="补丁分析"></a>补丁分析</h2><p>使用<code>Bindiff</code>对比<code>SetImeInfoEx</code>函数的改动可以看到函数的改动 补丁文件中增加了判断</p>
+<p><img src="Snipaste_2021-02-24_16-35-33.png"></p>
+<p>使用<code>IDA</code>看伪代码对比 可以看到增加了对V3的判断 如果为0直接返回</p>
+<p><img src="Snipaste_2021-02-24_16-46-53.png"></p>
+<p>使用<code>IDA</code>的交叉引用功能可以看到函数<code>NtUserSetImeInfoEx</code>对该函数调用</p>
+<p><img src="Snipaste_2021-02-24_16-53-19.png"></p>
+<p>此时我们仅对影响<code>V3</code>的第一个参数进行追溯 可以看到是通过<code>_GetProcessWindowStation</code>获取当前进程的窗口站对象指针 然后作为参数传入函数<code>SetImeInfoEx</code></p>
+<p><img src="Snipaste_2021-02-24_17-08-04.png"></p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getprocesswindowstation">GetProcessWindowStation</a>函数用于检索当前窗口站的句柄 返回值是窗口站的句柄</p>
+<h2 id="窗口站"><a href="#窗口站" class="headerlink" title="窗口站"></a>窗口站</h2><p>窗口站对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">kd&gt; dt win32k!tagWINDOWSTATION</span><br><span class="line">   +0x000 dwSessionId      : Uint4B</span><br><span class="line">   +0x004 rpwinstaNext     : Ptr32 tagWINDOWSTATION</span><br><span class="line">   +0x008 rpdeskList       : Ptr32 tagDESKTOP</span><br><span class="line">   +0x00c pTerm            : Ptr32 tagTERMINAL</span><br><span class="line">   +0x010 dwWSF_Flags      : Uint4B</span><br><span class="line">   +0x014 spklList         : Ptr32 tagKL</span><br><span class="line">   +0x018 ptiClipLock      : Ptr32 tagTHREADINFO</span><br><span class="line">   +0x01c ptiDrawingClipboard : Ptr32 tagTHREADINFO</span><br><span class="line">   +0x020 spwndClipOpen    : Ptr32 tagWND</span><br><span class="line">   +0x024 spwndClipViewer  : Ptr32 tagWND</span><br><span class="line">   +0x028 spwndClipOwner   : Ptr32 tagWND</span><br><span class="line">   +0x02c pClipBase        : Ptr32 tagCLIP</span><br><span class="line">   +0x030 cNumClipFormats  : Uint4B</span><br><span class="line">   +0x034 iClipSerialNumber : Uint4B</span><br><span class="line">   +0x038 iClipSequenceNumber : Uint4B</span><br><span class="line">   +0x03c spwndClipboardListener : Ptr32 tagWND</span><br><span class="line">   +0x040 pGlobalAtomTable : Ptr32 Void</span><br><span class="line">   +0x044 luidEndSession   : _LUID</span><br><span class="line">   +0x04c luidUser         : _LUID</span><br><span class="line">   +0x054 psidUser         : Ptr32 Void</span><br></pre></td></tr></table></figure>
+
+<p>成员域<code>spklList</code>是指向关联的键盘布局<code>tagKL</code>对象链表首节点的指针 </p>
+<p>键盘布局<code>tagKL</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">kd&gt; dt win32k!tagKL</span><br><span class="line">   +0x000 head             : _HEAD</span><br><span class="line">   +0x008 pklNext          : Ptr32 tagKL        &#x2F;&#x2F;指向下一个节点对象的指针</span><br><span class="line">   +0x00c pklPrev          : Ptr32 tagKL        &#x2F;&#x2F;指向前一个节点对象的指针</span><br><span class="line">   +0x010 dwKL_Flags       : Uint4B</span><br><span class="line">   +0x014 hkl              : Ptr32 HKL__</span><br><span class="line">   +0x018 spkf             : Ptr32 tagKBDFILE</span><br><span class="line">   +0x01c spkfPrimary      : Ptr32 tagKBDFILE</span><br><span class="line">   +0x020 dwFontSigs       : Uint4B</span><br><span class="line">   +0x024 iBaseCharset     : Uint4B</span><br><span class="line">   +0x028 CodePage         : Uint2B</span><br><span class="line">   +0x02a wchDiacritic     : Wchar</span><br><span class="line">   +0x02c piiex            : Ptr32 tagIMEINFOEX        &#x2F;&#x2F;执行关联的输入法扩展信息结构体对象</span><br><span class="line">   +0x030 uNumTbl          : Uint4B</span><br><span class="line">   +0x034 pspkfExtra       : Ptr32 Ptr32 tagKBDFILE</span><br><span class="line">   +0x038 dwLastKbdType    : Uint4B</span><br><span class="line">   +0x03c dwLastKbdSubType : Uint4B</span><br><span class="line">   +0x040 dwKLID           : Uint4B</span><br></pre></td></tr></table></figure>
+
+<p>当某个进程被关联到指定进程时 其地址被存储在目标进程信息的<code>tagPROCESSINFO</code>结构的对象成员域<code>rpwinsta</code>中 进程默认关联的窗口站是由系统自动创建的交互式窗口站 其成员域<code>spklList</code>指向真实的键盘布局对象节点</p>
+<p>当用户进程创建新从窗口站时 最终在内核函数中调用函数<code>xxxCreateWindowStation</code>进行创建窗口站 在函数执行期间 新的窗口站对象成员域<code>spklList</code>并没有进行初始化 指向NULL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">kd&gt; dt win32k!tagPROCESSINFO</span><br><span class="line">   +0x000 Process          : Ptr32 _EPROCESS</span><br><span class="line">   +0x004 RefCount         : Uint4B</span><br><span class="line">   +0x008 W32PF_Flags      : Uint4B</span><br><span class="line">   +0x00c InputIdleEvent   : Ptr32 _KEVENT</span><br><span class="line">   +0x010 StartCursorHideTime : Uint4B</span><br><span class="line">   +0x014 NextStart        : Ptr32 _W32PROCESS</span><br><span class="line">   +0x018 pDCAttrList      : Ptr32 Void</span><br><span class="line">   +0x01c pBrushAttrList   : Ptr32 Void</span><br><span class="line">   +0x020 W32Pid           : Uint4B</span><br><span class="line">   +0x024 GDIHandleCount   : Int4B</span><br><span class="line">   +0x028 GDIHandleCountPeak : Uint4B</span><br><span class="line">   +0x02c UserHandleCount  : Int4B</span><br><span class="line">   +0x030 UserHandleCountPeak : Uint4B</span><br><span class="line">   +0x034 GDIPushLock      : _EX_PUSH_LOCK</span><br><span class="line">   +0x038 GDIEngUserMemAllocTable : _RTL_AVL_TABLE</span><br><span class="line">   +0x070 GDIDcAttrFreeList : _LIST_ENTRY</span><br><span class="line">   +0x078 GDIBrushAttrFreeList : _LIST_ENTRY</span><br><span class="line">   +0x080 GDIW32PIDLockedBitmaps : _LIST_ENTRY</span><br><span class="line">   +0x088 hSecureGdiSharedHandleTable : Ptr32 Void</span><br><span class="line">   +0x08c DxProcess        : Ptr32 Void</span><br><span class="line">   +0x090 ptiList          : Ptr32 tagTHREADINFO</span><br><span class="line">   +0x094 ptiMainThread    : Ptr32 tagTHREADINFO</span><br><span class="line">   +0x098 rpdeskStartup    : Ptr32 tagDESKTOP</span><br><span class="line">   +0x09c pclsPrivateList  : Ptr32 tagCLS</span><br><span class="line">   +0x0a0 pclsPublicList   : Ptr32 tagCLS</span><br><span class="line">   +0x0a4 pwpi             : Ptr32 tagWOWPROCESSINFO</span><br><span class="line">   +0x0a8 ppiNext          : Ptr32 tagPROCESSINFO</span><br><span class="line">   +0x0ac ppiNextRunning   : Ptr32 tagPROCESSINFO</span><br><span class="line">   +0x0b0 cThreads         : Uint4B</span><br><span class="line">   +0x0b4 hdeskStartup     : Ptr32 HDESK__</span><br><span class="line">   +0x0b8 cSysExpunge      : Uint4B</span><br><span class="line">   +0x0bc dwhmodLibLoadedMask : Uint4B</span><br><span class="line">   +0x0c0 ahmodLibLoaded   : [32] Ptr32 Void</span><br><span class="line">   +0x140 rpwinsta         : Ptr32 tagWINDOWSTATION</span><br></pre></td></tr></table></figure>
+
+<p>在<code>path函数</code>中就增加了对成员域<code>spklList</code>是否为NULL的操作 当其为NULL的时候 <code>unpath函数</code>在没有判断的情况下 直接读取0页数据 当进程上下文不存在0页数据时 就会发生缺页异常</p>
+<h2 id="POC编写"><a href="#POC编写" class="headerlink" title="POC编写"></a>POC编写</h2><p>首先我们需要使用<code>CreateWindowStationA</code>函数来创建一个窗口站 然后使用<code>SetProcessWindowStation</code>函数将新创建的窗口站对象与当前进程关联起来 然后调用<code>NtUserSetImeInfoEx</code>函数 该函数只有一个参数 我们将此参数指向一个无效内存 然后传参给我们的<code>SetImeInfoEx</code>函数 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">signed int __stdcall NtUserSetImeInfoEx(char *a1)</span><br><span class="line">&#123;</span><br><span class="line">  signed int v1; &#x2F;&#x2F; esi</span><br><span class="line">  char *v2; &#x2F;&#x2F; ecx</span><br><span class="line">  char v3; &#x2F;&#x2F; al</span><br><span class="line">  signed int v4; &#x2F;&#x2F; eax</span><br><span class="line">  char v6; &#x2F;&#x2F; [esp+10h] [ebp-178h]</span><br><span class="line">  CPPEH_RECORD ms_exc; &#x2F;&#x2F; [esp+170h] [ebp-18h]</span><br><span class="line"></span><br><span class="line">  UserEnterUserCritSec();</span><br><span class="line">  if ( *(_BYTE *)gpsi &amp; 4 )</span><br><span class="line">  &#123;</span><br><span class="line">    ms_exc.registration.TryLevel &#x3D; 0;</span><br><span class="line">    v2 &#x3D; a1;</span><br><span class="line">    if ( (unsigned int)a1 &gt;&#x3D; W32UserProbeAddress )</span><br><span class="line">      v2 &#x3D; (char *)W32UserProbeAddress;</span><br><span class="line">    v3 &#x3D; *v2;</span><br><span class="line">    qmemcpy(&amp;v6, a1, 0x15Cu);</span><br><span class="line">    ms_exc.registration.TryLevel &#x3D; -2;</span><br><span class="line">    v4 &#x3D; _GetProcessWindowStation(0);</span><br><span class="line">    v1 &#x3D; SetImeInfoEx(v4, &amp;v6);</span><br><span class="line">  &#125;</span><br><span class="line">  else</span><br><span class="line">  &#123;</span><br><span class="line">    UserSetLastError(120);</span><br><span class="line">    v1 &#x3D; 0;</span><br><span class="line">  &#125;</span><br><span class="line">  UserSessionSwitchLeaveCrit();</span><br><span class="line">  return v1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">signed int __stdcall SetImeInfoEx(signed int a1, _DWORD *a2)</span><br><span class="line">&#123;</span><br><span class="line">  signed int result; &#x2F;&#x2F; eax</span><br><span class="line">  _DWORD *v3; &#x2F;&#x2F; eax</span><br><span class="line">  _DWORD *v4; &#x2F;&#x2F; eax</span><br><span class="line"></span><br><span class="line">  result &#x3D; a1;</span><br><span class="line">  if ( a1 )</span><br><span class="line">  &#123;</span><br><span class="line">    v3 &#x3D; *(_DWORD **)(a1 + 20); &#x2F;&#x2F;v3为a1偏移20处的对象 a1为NtUserSetImeInfoEx函数的v4 </span><br><span class="line">    while ( v3[5] !&#x3D; *a2 )        &#x2F;&#x2F;倘若此时v3为NULL 就会造成非法访问异常</span><br><span class="line">    &#123;</span><br><span class="line">      v3 &#x3D; (_DWORD *)v3[2];</span><br><span class="line">      if ( v3 &#x3D;&#x3D; *(_DWORD **)(a1 + 20) )</span><br><span class="line">        return 0;</span><br><span class="line">    &#125;</span><br><span class="line">    v4 &#x3D; (_DWORD *)v3[11];</span><br><span class="line">    if ( !v4 )</span><br><span class="line">      return 0;</span><br><span class="line">    if ( !v4[18] )</span><br><span class="line">      qmemcpy(v4, a2, 0x15Cu);</span><br><span class="line">    result &#x3D; 1;</span><br><span class="line">  &#125;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>NtUserSetImeInfoEX</code>函数是系统调用 所以没有导出函数 我们需要使用系统调用号来实现</p>
+<p>我们在<a target="_blank" rel="noopener" href="https://github.com/j00ru/windows-syscalls/blob/master/x86/json/win32k-per-syscall.json">这里</a>找到对应版本的系统调用号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&quot;NtUserSetImeInfoEx&quot;: &#123;</span><br><span class="line">    &quot;Windows 2000&quot;: &#123;</span><br><span class="line">      &quot;SP2&quot;: 4594,</span><br><span class="line">      &quot;SP4&quot;: 4594</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows XP&quot;: &#123;</span><br><span class="line">      &quot;SP0&quot;: 4613,</span><br><span class="line">      &quot;SP1&quot;: 4613,</span><br><span class="line">      &quot;SP2&quot;: 4613,</span><br><span class="line">      &quot;SP3&quot;: 4613</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows Server 2003&quot;: &#123;</span><br><span class="line">      &quot;SP0&quot;: 4610,</span><br><span class="line">      &quot;SP1&quot;: 4610,</span><br><span class="line">      &quot;SP2&quot;: 4610,</span><br><span class="line">      &quot;R2&quot;: 4610,</span><br><span class="line">      &quot;R2 SP2&quot;: 4610</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows Vista&quot;: &#123;</span><br><span class="line">      &quot;SP0&quot;: 4635,</span><br><span class="line">      &quot;SP1&quot;: 4635,</span><br><span class="line">      &quot;SP2&quot;: 4635</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows Server 2008&quot;: &#123;</span><br><span class="line">      &quot;SP0&quot;: 4635,</span><br><span class="line">      &quot;SP2&quot;: 4635</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows 7&quot;: &#123;</span><br><span class="line">      &quot;SP0&quot;: 4646,</span><br><span class="line">      &quot;SP1&quot;: 4646</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows 8&quot;: &#123;</span><br><span class="line">      &quot;8.0&quot;: 4696,</span><br><span class="line">      &quot;8.1&quot;: 4699</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;Windows 10&quot;: &#123;</span><br><span class="line">      &quot;1507&quot;: 4705,</span><br><span class="line">      &quot;1511&quot;: 4706,</span><br><span class="line">      &quot;1607&quot;: 4712,</span><br><span class="line">      &quot;1703&quot;: 4650,</span><br><span class="line">      &quot;1709&quot;: 4656,</span><br><span class="line">      &quot;1803&quot;: 4664,</span><br><span class="line">      &quot;1809&quot;: 4665,</span><br><span class="line">      &quot;1903&quot;: 4665,</span><br><span class="line">      &quot;1909&quot;: 4665,</span><br><span class="line">      &quot;2004&quot;: 5054,</span><br><span class="line">      &quot;20H2&quot;: 5054</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以我们可以根据调用号写出我们自己的调用</p>
+<p><img src="Snipaste_2021-03-05_17-19-53.png"></p>
+<p>然后再简单的创建一下窗口站 并关联到进程上 调用我们的<code>NtUserSetImeInfoEx</code>函数 而此时关联窗口站的成员域<code>spklList</code>指向空地址</p>
+<p>空地址所在的零页内存并没有映射 则当内核函数<code>SetImeInfoEx</code>在访问零页内存时 即可异常</p>
+<p><img src="Snipaste_2021-03-05_17-22-25.png"></p>
+<p>进行Crash</p>
+<p><img src="Snipaste_2021-03-05_17-29-33.png"></p>
+<p><img src="Snipaste_2021-03-06_11-02-31.png"></p>
+<h1 id="0x03：漏洞利用"><a href="#0x03：漏洞利用" class="headerlink" title="0x03：漏洞利用"></a>0x03：漏洞利用</h1><p>首先需要实现任意地址读写 我们在用户进程下只能通过某些函数来有限的控制内核对象的函数数据 而当内核函数的某个成员指针指向用户地址空间时 用户进程即可利用代码分配内存空间再进行布局即可扩大控制内核函数对象的能力</p>
+<p>首先分配0页内存 以便进行我们的内存布局</p>
+<p><img src="Snipaste_2021-03-08_14-33-34.png"></p>
+<p>实现内核任意地址读写需要将某内核对象的函数指针成员域替换为位于用户进程空间中由利用代码实现的函数的地址 并修改代表内核或用户态的相关标志位 进而使该对象在处理相关事件时 在内核中直接执行到位于用户进程地址空间中的函数代码 并在该函数中最终实现内核提权 这次我们使用窗口对象的消息处理函数指针成员域<code>lpfnWndProc</code>来实现</p>
+<p>接下来创建窗口对象 将窗口对象的成员数据填充到源输入法扩展信息<code>tagIMEINFOEX</code>对象中 置位其中的成员标志位<code>bServerSideWindowProc</code>并修改指针成员域<code>lpfnWndProc</code>的值 再使位于零页的伪造键盘布局<code>tagKL</code>对象的成员域<code>piiex</code>指向目标窗口对象的内核地址，将位于源输入法扩展信息对象中的被修改过的窗口对象成员数据覆盖到目标窗口对象的内存块中 实现对目标窗口对象的特定成员域的修改</p>
+<p><img src="Snipaste_2021-03-08_15-20-40.png"></p>
+<p>函数<code>SetImeInfoEx</code>在执行拷贝时是以<code>tagIMEINFOEX</code>对象的大小作为拷贝范围的 大小为<code>0x15</code>个字节 超过<code>tagWND</code>对象的<code>0xb0</code>个字节 则在注册窗口对象的足够的扩展区域大小</p>
+<p><img src="Snipaste_2021-03-08_15-31-18.png"></p>
+<p>然后使用<code>HMValidateHandle</code>泄露内核对象地址</p>
+<p><img src="Snipaste_2021-03-08_15-37-09.png"></p>
+<p><img src="Snipaste_2021-03-08_15-39-07.png"></p>
+<p>接下来获取用户态映射地址的内存中拷贝<code>tagIMEINFOEX</code>结构体大小的数据到利用代码定义的源输入法扩展信息对象中 获取到的窗口对象内核地址作为位于零页的伪造键盘布局对象的成员域<code>piiex</code>指向的内存地址</p>
+<p>然后修改位于源输入法扩展信息对象中的窗口对象成员数据 置位其中的成员标志位<code>bServerSideWindowProc</code>并修改指针成员域<code>lpfnWndproc</code>的值</p>
+<p><img src="Snipaste_2021-03-08_15-56-43.png"></p>
+<p>将目标窗口对象的成员标志位 <code>bServerSideWindowProc</code> 置位 并将其窗口对象的消息处理函数成员域修改为用户进程自定义的消息处理函数地址之后 用户进程向该窗口对象发送消息时 系统将在内核中直接进入目标消息处理函数中执行消息处理的任务 从而进入自定义消息处理函数 根据参数<code>pwnd</code>指向的当前窗口对象关联的线程信息<code>tagTHEADINFO</code>对象 然后定位到<code>EPROCESS</code>对象的地址 再根据<code>EPROCESS</code>链表找到<code>System</code>进程地址 获取其<code>Token</code>值 在写入当前进程的<code>Token</code>中即可完成提权</p>
+<p><img src="Snipaste_2021-03-08_16-07-37.png"></p>
+<h1 id="0x04-总结"><a href="#0x04-总结" class="headerlink" title="0x04:总结"></a>0x04:总结</h1><p>该漏洞的触发以及原理是相对简单的 可以很好的理解并去触发该漏洞 但在利用上 相对来说就很有难度了 其实在对于零页内存和任意地址读写以及泄露内核基址这种问题 我们经常会碰到 也经常去使用 需要说的是 代代版本的缓解措施都需要去研究 现在还不具有这些能力 以及对于内存布局的问题也需要去学习</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/02/24/CVE-2018-8120win32k-sys%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-win内核系列漏洞利用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -805,84 +939,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-HEVD内核漏洞学习-7-任意内存覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">HEVD内核漏洞学习(7)任意内存覆盖</a>
-    </h1>
-  
-
-        
-         
-
-<a href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/" class="archive-article-date">
-  	<time datetime="2020-10-26T14:43:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
-        
-      </header>
-    	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第七篇了 讲任意内存覆盖 对于本节还是容易理解的</p>
-        
-          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/26/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-7-%E4%BB%BB%E6%84%8F%E5%86%85%E5%AD%98%E8%A6%86%E7%9B%96/">展开全文 >></a>
         </p>
       
 
