@@ -131,6 +131,84 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-HEVD内核漏洞学习-8-未初始化栈变量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">HEVD内核漏洞学习(8)未初始化栈变量</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/" class="archive-article-date">
+  	<time datetime="2020-10-28T02:56:42.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>这一系列就快结束了 这次是未初始化栈变量 开始吧</p>
+        
+          <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">HEVD内核</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/28/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-8-%E6%9C%AA%E5%88%9D%E5%A7%8B%E5%8C%96%E6%A0%88%E5%8F%98%E9%87%8F/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-HEVD内核漏洞学习-7-任意内存覆盖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -465,7 +543,7 @@
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 属于一种冷门漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了</p>
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了</p>
         
           <a class="article-more-a" href="/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/#more">more >></a>
         
@@ -805,84 +883,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/10/08/CVE-2013-1347UAF%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-CVE-2013-2551整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-2551整数溢出漏洞分析</a>
-    </h1>
-  
-
-        
-         
-
-<a href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
-  	<time datetime="2020-10-04T01:22:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
-</a>
-        
-      </header>
-    	
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2013-2551是由于负责VML解析的模块VGX.DLL，在处理&lt;v:stroke&gt;标签的dashstyle.array.length属性时，没有对传入的参数进行完备验证而导致的整数溢出。攻击者利用这个漏洞能够对任意地址进行读写操作——通过读取敏感内存信息、改写对象虚函数表，就能够完美绕过重重内存防护机制实现任意代码执行。</p>
-        
-          <a class="article-more-a" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 

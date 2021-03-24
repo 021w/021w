@@ -131,21 +131,99 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-CVE-2012-0774整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2013-2551整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0774整数溢出漏洞分析</a>
+      <a class="article-title" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-2551整数溢出漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+<a href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+  	<time datetime="2020-10-04T01:22:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-04</time>
+</a>
+        
+      </header>
+    	
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2013-2551是由于负责VML解析的模块VGX.DLL，在处理&lt;v:stroke&gt;标签的dashstyle.array.length属性时，没有对传入的参数进行完备验证而导致的整数溢出。攻击者利用这个漏洞能够对任意地址进行读写操作——通过读取敏感内存信息、改写对象虚函数表，就能够完美绕过重重内存防护机制实现任意代码执行。</p>
+        
+          <a class="article-more-a" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞分析</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/04/CVE-2013-2551%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CVE-2012-0774整数溢出漏洞分析/CVE-2012-0774整数溢出漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0774整数溢出漏洞分析</a>
+    </h1>
+  
+
+        
+         
+
+<a href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
   	<time datetime="2020-09-30T06:05:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-30</time>
 </a>
         
@@ -155,7 +233,7 @@
       
         <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2012-0774是Adobe Acrobat和Reader在True Type Font (TTF)处理的实现上存在整数溢出漏洞，攻击者可利用此漏洞执行任意代码。</p>
         
-          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -179,7 +257,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/30/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0774%E6%95%B4%E6%95%B0%E6%BA%A2%E5%87%BA%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -209,21 +287,21 @@
 
 
   
-    <article id="post-CVE-2012-1876堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2012-1876堆漏洞分析/CVE-2012-1876堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-1876堆漏洞分析</a>
+      <a class="article-title" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-1876堆漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+<a href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
   	<time datetime="2020-09-25T05:35:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-25</time>
 </a>
         
@@ -233,7 +311,7 @@
       
         <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>该IE浏览器漏洞的成因在mshtml.dll这个模块的CTableLayout::CalculateMinMax函数里，程序在执行时会以HTML代码中的元素span属性作为循环控制次数向堆中写入数据。如果此span值设置不当，那么就会引发堆溢出问题。</p>
         
-          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -257,7 +335,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/25/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-1876%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -287,21 +365,21 @@
 
 
   
-    <article id="post-CVE-2013-0077堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2013-0077堆漏洞分析/CVE-2013-0077堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-0077堆漏洞分析</a>
+      <a class="article-title" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2013-0077堆漏洞分析</a>
     </h1>
   
 
         
          
 
-<a href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+<a href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
   	<time datetime="2020-09-22T09:53:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-22</time>
 </a>
         
@@ -312,7 +390,7 @@
         <h1 id="0X00：-漏洞描述"><a href="#0X00：-漏洞描述" class="headerlink" title="0X00： 漏洞描述"></a>0X00： 漏洞描述</h1><p>exploit-db 漏洞公布站点上发布了 QQplayer.exe 3.7.892 m2p quartz.dll Heap Pointer OverWrite PoC，后被人提交至乌云。这个漏洞与 QQplayer.exe 没有任何关系</p>
 <p>CVE-2013-0077是系统的quartz.dll在解析.m2p文件头时没有限制数据的大小 导致复制的数据超出了申请的栈空间</p>
         
-          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -336,7 +414,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/22/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2013-0077%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -366,21 +444,21 @@
 
 
   
-    <article id="post-CVE-2012-0003堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2012-0003堆漏洞分析/CVE-2012-0003堆漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0003 Microsoft Windows Media Player winmm.dll MIDI文件堆溢出漏洞</a>
+      <a class="article-title" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2012-0003 Microsoft Windows Media Player winmm.dll MIDI文件堆溢出漏洞</a>
     </h1>
   
 
         
          
 
-<a href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+<a href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
   	<time datetime="2020-09-13T06:59:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-13</time>
 </a>
         
@@ -390,7 +468,7 @@
       
         <h1 id="0X00-漏洞描述"><a href="#0X00-漏洞描述" class="headerlink" title="0X00 漏洞描述"></a>0X00 漏洞描述</h1><p>CVE-2012-0003是微软的多媒体库 winmm.dll 在处理 MIDI 文件时，由于对数据处理不当导致的堆溢出，攻击者可在网页中嵌入恶意构造的 MIDI 文件来远程执行任意代码。</p>
         
-          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -414,7 +492,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/13/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2012-0003%E5%A0%86%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -444,21 +522,21 @@
 
 
   
-    <article id="post-CVE-2011-0104栈漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2011-0104栈漏洞分析/CVE-2011-0104栈漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2011-0104 Microsoft Excel TOOLBARDEF漏洞复现</a>
+      <a class="article-title" href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2011-0104 Microsoft Excel TOOLBARDEF漏洞复现</a>
     </h1>
   
 
         
          
 
-<a href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+<a href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
   	<time datetime="2020-09-10T08:36:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-10</time>
 </a>
         
@@ -468,7 +546,7 @@
       
         <h1 id="0X00：-漏洞描述"><a href="#0X00：-漏洞描述" class="headerlink" title="0X00： 漏洞描述"></a>0X00： 漏洞描述</h1><p>CVE-2011-0104是Microsoft Excel在解析XLB文件中的TOOLBARDEF Record时存在栈溢出漏洞，导致可执行任意代码。</p>
         
-          <a class="article-more-a" href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -492,7 +570,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/09/10/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2011-0104%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 
@@ -522,21 +600,21 @@
 
 
   
-    <article id="post-CVE-2010-2883栈漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CVE-2010-2883栈漏洞分析/CVE-2010-2883栈漏洞分析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2010-2883 Adobe Reader TTF字体SING表栈溢出漏洞</a>
+      <a class="article-title" href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">CVE-2010-2883 Adobe Reader TTF字体SING表栈溢出漏洞</a>
     </h1>
   
 
         
          
 
-<a href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
+<a href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" class="archive-article-date">
   	<time datetime="2020-08-01T08:26:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-01</time>
 </a>
         
@@ -546,7 +624,7 @@
       
         <h1 id="0X00：-漏洞描述"><a href="#0X00：-漏洞描述" class="headerlink" title="0X00： 漏洞描述"></a>0X00： 漏洞描述</h1><p>CVE-2010-2883是Adobe Reader和Acrobat中的CoolType.dll库在解析字体文件SING表中的uniqueName项时存在的栈溢出漏洞， 用户受骗打开了特制的PDF文件就有可能导致执行任意代码。</p>
         
-          <a class="article-more-a" href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
+          <a class="article-more-a" href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/#more">more >></a>
         
       
 
@@ -570,7 +648,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/08/01/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/CVE-2010-2883%E6%A0%88%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">展开全文 >></a>
         </p>
       
 

@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>HEVD内核漏洞学习-3-类型混淆 | 021w</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0x00前言第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 属于一种冷门漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了">
+  <meta name="description" content="0x00前言第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HEVD内核漏洞学习-3-类型混淆">
 <meta property="og:url" content="http://yoursite.com/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/index.html">
 <meta property="og:site_name" content="021w">
-<meta property="og:description" content="0x00前言第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 属于一种冷门漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了">
+<meta property="og:description" content="0x00前言第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了">
 <meta property="og:locale">
 <meta property="og:image" content="http://yoursite.com/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/1.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/2.png">
 <meta property="og:image" content="http://yoursite.com/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/1.gif">
 <meta property="og:image" content="http://yoursite.com/2020/10/23/HEVD%E5%86%85%E6%A0%B8%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0-3-%E7%B1%BB%E5%9E%8B%E6%B7%B7%E6%B7%86/3.png">
 <meta property="article:published_time" content="2020-10-23T07:23:14.000Z">
-<meta property="article:modified_time" content="2020-10-23T15:01:47.945Z">
+<meta property="article:modified_time" content="2021-03-11T08:35:47.770Z">
 <meta property="article:author" content="021w">
 <meta property="article:tag" content="HEVD内核">
 <meta name="twitter:card" content="summary">
@@ -166,7 +166,7 @@
     	
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 属于一种冷门漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了</p>
+        <h1 id="0x00前言"><a href="#0x00前言" class="headerlink" title="0x00前言"></a>0x00前言</h1><p>第三部分讲type confusion（类型混淆）漏洞 这是之前没有接触过的类型的漏洞 基本上无法靠fuzzing挖掘到 只能靠人手工得到 这就要求对操作系统有非常高的造诣了</p>
 <a id="more"></a>
 <h1 id="0x01漏洞原理"><a href="#0x01漏洞原理" class="headerlink" title="0x01漏洞原理"></a>0x01漏洞原理</h1><p>它的定义是 当一段代码没有验证对象类型时 并在没有进行类型检查的情况下盲目使用它  进而导致type confusion 导致表达的类型作为一片内存区域 此时将我们的函数指针或数据放入内存之中 就会导致代码执行 </p>
 <h2 id="函数分析"><a href="#函数分析" class="headerlink" title="函数分析"></a>函数分析</h2><p><strong>TriggerTypeConfusion</strong><br>函数使用了UNION  然后在没有设置回调对象的情况下 就给Status赋值 导致直接使用ObjectType的值 而ObjectType指向恶意代码时就可以利用</p>
